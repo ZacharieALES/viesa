@@ -21,6 +21,9 @@ public class InitializationStep extends AbstractTutoStep {
 		getSelectionPanel().jtf_sim_scores.setEnabled(false);
 		getSelectionPanel().jtf_K.setEnabled(false);
 		getSelectionPanel().jtf_maxSim.setEnabled(false);
+
+		getVisualisationPanel().jb_switchOrientation12.setEnabled(false);
+		getVisualisationPanel().jb_switchOrientationAB.setEnabled(false);
 		
 		MainTutorial.nextStep();
 	}

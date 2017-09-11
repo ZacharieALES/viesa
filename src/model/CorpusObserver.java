@@ -29,7 +29,7 @@ public interface CorpusObserver extends Observer{
 	
 	public abstract void updatePatterns();
 	public abstract void updateClusters(ClusteringSolution cs);
-	public abstract void updateSABREParam();
+	public abstract void updateSABREParameters();
 	public abstract void abstractException(AbstractException e);
 	public abstract void endOfClusteringProcess();
 	public abstract void endOfExtractionProcess();

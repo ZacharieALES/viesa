@@ -514,11 +514,7 @@ public class StandardView extends JFrame implements CorpusObserver,
 		
 		VisualisationPanel.getInstance().updateClusters(cs);
 	}
-
-	public void updateSABREParam() {
-		// jf_s.setMinScore(svc.getCorpus().getScoreMin());
-	}
-
+	
 	public StandardViewControler getControler() {
 		return svc;
 	}

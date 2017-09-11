@@ -48,8 +48,8 @@ public class EditGap extends AbstractTutoStep {
   +"</tr>"
 +"</table>"
 			+ "The longer the gap, the higher the penalty on the alignment score.<br>"
-				+ "As a result, decreasing the gap cost may increase the size of the obtained alignments.<br>"
-				+ "Currently, this cost is very high, we will decrease it to observe bigger alignments.";
+				+ "As a result, decreasing the gap cost may increase the size of the obtained patterns.<br>"
+				+ "Currently, this cost is very high, we will decrease it to observe bigger patterns.";
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class EditGap extends AbstractTutoStep {
 
 	@Override
 	public String resultsComment() {
-		return "You can see that by decreasing the gap cost, some alignments containing empty lines were obtained.<br><br>"
+		return "You can see that by decreasing the gap cost, some patterns containing empty lines were obtained.<br><br>"
 				+ "Another interesting observation is that decreasing the gap cost also allows alignments with the following configuration:"
 				+ "<table  align=\"center\" style=\"margin: 0px auto;\">"
   +"<tr>"
@@ -77,7 +77,7 @@ public class EditGap extends AbstractTutoStep {
     +"<td align=\"center\" valign=\"middle\"> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp C</td>" 
   +"</tr>"
 +"</table>"
-				+ "We call this type of configuration a <i>desynchronization</i>. It may lead to alignments with different shapes in both annotation arrays.";
+				+ "We call this type of configuration a <i>desynchronization</i>. It may lead to alignments which patterns have different shapes.";
 	}
 
 }

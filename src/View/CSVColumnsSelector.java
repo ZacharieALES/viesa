@@ -46,13 +46,16 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import exception.InvalidArgumentsToCreateAnAAColumnFormat;
+import main.MainTutorial;
 import model.AAColumnFormat;
 import model.AAColumnFormat.ColumnType;
 import model.AnnotationColumn;
 import model.CommentColumn;
 import model.Corpus;
+import model.NumericalColumn;
 import model.PositionedColumn;
 import net.miginfocom.swing.MigLayout;
+import tuto.EditColumnSelection;
 
 public class CSVColumnsSelector extends JDialog implements AWTEventListener {
 
@@ -64,6 +67,8 @@ public class CSVColumnsSelector extends JDialog implements AWTEventListener {
 	private final List<String[]> csvFile;
 	public AAColumnFormat aacf = null;
 	public static Color black = new Color(0, 0, 0);
+	private int gap = 11;
+	private int colWidth = 100;
 
 	public CSVColumnsSelector(JFrame parent, final List<String[]> csvFile) {
 
@@ -76,9 +81,18 @@ public class CSVColumnsSelector extends JDialog implements AWTEventListener {
 				.getScreenSize();
 		int width = (int) screenSize.getWidth();
 
-		this.setSize(Math.min(width, 80 * Corpus.getCorpus().initialAnnotationColumns.size()), 400);
+		int colNb = 1;
+
+		if(csvFile != null && csvFile.size() > 0 && csvFile.get(0) != null)
+			colNb = csvFile.get(0).length;
+
+		this.setSize(Math.min(width, (colWidth + gap) * colNb), 400);
 		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+
+		if(!MainTutorial.IS_TUTO || !(MainTutorial.getCurrentStep() instanceof EditColumnSelection))
+			this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		else
+			this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		tk.addAWTEventListener(this, AWTEvent.KEY_EVENT_MASK);
@@ -152,10 +166,10 @@ public class CSVColumnsSelector extends JDialog implements AWTEventListener {
 						csvTable.getColumnModel().getColumn(i)
 						.setHeaderValue(selectionValue.getName());
 
-						int id = Corpus.getCorpus().initialCommentColumns.indexOf(i);
-
-						if(id == -1)
-							id = Corpus.getCorpus().initialAnnotationColumns.indexOf(i);
+						//						int id = Corpus.getCorpus().initialCommentColumns.indexOf(i);
+						//
+						//						if(id == -1)
+						//							id = Corpus.getCorpus().initialAnnotationColumns.indexOf(i);
 					}
 
 					lastSelectedColumn = idCol;
@@ -171,7 +185,6 @@ public class CSVColumnsSelector extends JDialog implements AWTEventListener {
 		csvTable.addMouseListener(ma);
 		csvTable.getTableHeader().addMouseListener(ma);
 
-
 		csvTable.setShowGrid(false);
 		csvTable.setIntercellSpacing(new Dimension(0,0));
 
@@ -180,14 +193,15 @@ public class CSVColumnsSelector extends JDialog implements AWTEventListener {
 		JHelpButton jhb_help = new JHelpButton(
 				parent,
 				"<html>This window is used to select or modify the columns type of your csv input files.<br><br>"
-				+ "The possible types of a column are:<br>"
-				+ "- unused: the column is ignored;<br>"
-				+ "- comment: the column is visible but not used to extract the patterns;<br>"
-				+ "- numerical annotation: the column is visible and used to extract the patterns. "
-				+ "In this column, the similarity between two annotations x and y is equal to max(0, maximal_similarity - |x-y|);<br>"
-				+ "- non numerical annotation: the column is visible and used to extract the patterns. "
-				+ "The similarity between two annotations in this column is computed according to the similarity score table.<br>"
-				+ "If the score between two annotations is not specified in the score table it is considered to be 0.<br>"
+						+ "To change the type of a column, click on it.<br><br>"				
+						+ "The possible types of a column are:<br>"
+						+ "- unused: the column will be ignored (it will not be visible and it will not be used to extract patterns);<br>"
+						+ "- comment: the column will be visible but not used to extract the patterns;<br>"
+						+ "- numerical annotation: the column will be visible and used to extract the patterns. "
+						+ "In a numerical column, the similarity between two annotations x and y is equal to max(0, maximal_similarity - |x-y|);<br>"
+						+ "- non numerical annotation: the column will be visible and used to extract the patterns. "
+						+ "In an annotation column, the similarity between two annotations is computed according to their similarity score.<br>"
+						+ "If the score between two annotations is not specified in the score table it is considered to be 0.<br>"
 						+ "Tips:<br>- You can use left and right clicks;<br>- You can use shift to modify several columns with one click.</html>");
 
 		jb_ok.addActionListener(new ActionListener() {
@@ -222,26 +236,28 @@ public class CSVColumnsSelector extends JDialog implements AWTEventListener {
 		/* For each column in the column format */
 		for (int i = 0; i < Corpus.getCorpus().getTotalNumberOfColumns(); ++i) {
 
-			int csvColId = Corpus.getCorpus().initialAnnotationColumns.get(i);
+			/* Get the column */
+			PositionedColumn pc = Corpus.getCorpus().getPositionedColumn(i);
 
-			ColumnType type = null;
-			int id = 0;
+			//		/* For each column in the initial annotations columns */
+			//		for (int i = 0; i < Corpus.getCorpus().initialAnnotationColumns.size() ; ++i) {
+			//
+			//			int csvColId = Corpus.getCorpus().initialAnnotationColumns.get(i);
+			//
+			//			int id = 0;
+			//			
+			//			while(type == null && id < Corpus.getCorpus().getTotalNumberOfColumns()){
+			//
+			//				if(Corpus.getCorpus().getPositionedColumn(id).position == csvColId)
+			//					type = Corpus.getCorpus().getPositionedColumn(id).column.getType();
+			//				else
+			//					id++;
+			//
+			//			}
 
-			while(type == null && id < Corpus.getCorpus().getTotalNumberOfColumns()){
-
-				if(Corpus.getCorpus().getPositionedColumn(id).position == csvColId)
-					type = Corpus.getCorpus().getPositionedColumn(id).column.getType();
-				else
-					id++;
-
-			}
-
-			if(type == null)
-				type = ColumnType.COMMENT;
-
-			al_selection.set(visibleColumnsNb, type);
-			csvTable.getColumnModel().getColumn(visibleColumnsNb)
-			.setHeaderValue(type.getName());
+			al_selection.set(visibleColumnsNb, pc.column.getType());
+			csvTable.getColumnModel().getColumn(pc.position)
+			.setHeaderValue(pc.column.getType().getName());
 
 			visibleColumnsNb++;
 
@@ -278,10 +294,8 @@ public class CSVColumnsSelector extends JDialog implements AWTEventListener {
 
 			CSVTableRenderer rend = new CSVTableRenderer();
 
-			int gap = 11;
-			int width = this.getJSP().getWidth()
-					- (gap * (this.getColumnCount() + 1));
-			int size = Math.max(width / this.getColumnCount(), 4 * gap);
+			int width = 100 * this.getColumnCount();//this.getJSP().getWidth() - (gap * (this.getColumnCount() + 1));
+			int size = Math.max(width / this.getColumnCount(), this.getColumnCount() * gap);
 
 			for (int i = 0; i < this.getColumnCount(); i++) {
 
@@ -308,32 +322,35 @@ public class CSVColumnsSelector extends JDialog implements AWTEventListener {
 
 		public CSVTableModel(List<String[]> rowdata) {
 
-			List<String[]> partialRowData = new ArrayList<>();
+			//			List<String[]> partialRowData = new ArrayList<>();
+			//
+			//			/* For each row */
+			//			for(String[] as: rowdata){
+			//
+			//				String[] ats = new String[Corpus.getCorpus().initialAnnotationColumns.size()];
+			//
+			//				int id = 0;
+			//
+			//				/* For each original column */
+			//				for(int i = 0 ; i < as.length ; ++i){
+			//
+			//					if(Corpus.getCorpus().initialAnnotationColumns.indexOf(i) != -1){
+			//
+			//						ats[id] = as[i];
+			//						id++;
+			//					}
+			//
+			//				}
+			//
+			//				partialRowData.add(ats);
+			//
+			//			}
+			//
+			//			this.rowdata = partialRowData;
+			//			columnNames = new String[Corpus.getCorpus().initialAnnotationColumns.size()];
 
-			/* For each row */
-			for(String[] as: rowdata){
-
-				String[] ats = new String[Corpus.getCorpus().initialAnnotationColumns.size()];
-
-				int id = 0;
-
-				/* For each original column */
-				for(int i = 0 ; i < as.length ; ++i){
-
-					if(Corpus.getCorpus().initialAnnotationColumns.indexOf(i) != -1){
-
-						ats[id] = as[i];
-						id++;
-					}
-
-				}
-
-				partialRowData.add(ats);
-
-			}
-
-			this.rowdata = partialRowData;
-			columnNames = new String[Corpus.getCorpus().initialAnnotationColumns.size()];
+			this.rowdata = rowdata;
+			columnNames = new String[rowdata.get(0).length];
 
 			/* Initially, all the columns are set to COMMENT */
 			for (int i = 0; i < getColumnCount(); i++) {
@@ -437,37 +454,29 @@ public class CSVColumnsSelector extends JDialog implements AWTEventListener {
 
 		int id = 0;
 		boolean foundAnnotationColumn = false;
-		int i = 0;
 
-		while(i < csvFile.get(0).length && !foundAnnotationColumn){
+		while(id < csvFile.get(0).length && !foundAnnotationColumn){
 
-			if(Corpus.getCorpus().initialAnnotationColumns.indexOf(i) != -1){
-				ColumnType c = al_selection.get(id);
+			ColumnType c = al_selection.get(id);
 
-				switch (c) {
-				case ANNOTATION:
-					foundAnnotationColumn = true;
-					break;
-				case NUMERICAL_ANNOTATION:
-					foundAnnotationColumn = true;
-					break;
-				}
-
-				id++;
+			switch (c) {
+			case ANNOTATION:
+				foundAnnotationColumn = true;
+				break;
+			case NUMERICAL_ANNOTATION:
+				foundAnnotationColumn = true;
+				break;
 			}
 
-			i++;
+			id++;
 		}
 
 		if(foundAnnotationColumn){
 			ArrayList<PositionedColumn> al_pc = new ArrayList<PositionedColumn>();
 
-			id = 0;
+			for (int i = 0; i < csvFile.get(0).length; i++) {
 
-			for (i = 0; i < csvFile.get(0).length; i++) {
-
-				if(Corpus.getCorpus().initialAnnotationColumns.indexOf(i) != -1){
-					ColumnType c = al_selection.get(id);
+					ColumnType c = al_selection.get(i);
 
 					switch (c) {
 					case COMMENT:
@@ -476,13 +485,10 @@ public class CSVColumnsSelector extends JDialog implements AWTEventListener {
 					case ANNOTATION:
 						al_pc.add(new PositionedColumn(new AnnotationColumn(), i));
 						break;
+					case NUMERICAL_ANNOTATION:
+						al_pc.add(new PositionedColumn(new NumericalColumn(), i));
+						break;
 					}
-
-					id++;
-				}
-				else if(Corpus.getCorpus().initialCommentColumns.indexOf(i) != -1){
-					al_pc.add(new PositionedColumn(new CommentColumn(), i));
-				}
 
 			}
 
@@ -494,7 +500,7 @@ public class CSVColumnsSelector extends JDialog implements AWTEventListener {
 
 			setVisible(false);
 		}
-		
+
 		/* If no annotation column is found */
 		else{
 			JOptionPane.showMessageDialog(this, "At least one annotation column must be selected");

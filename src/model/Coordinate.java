@@ -90,7 +90,7 @@ public class Coordinate<T extends Number>implements Serializable{
 		
 		boolean result = false;
 		
-		if(o instanceof Coordinate) {
+		if(o instanceof Coordinate<?>) {
 			Coordinate<T> c = (Coordinate<T>)o;
 			result = c.x.equals(x) && c.y.equals(y);
 		}

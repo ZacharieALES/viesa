@@ -21,7 +21,7 @@ public class OpenColumnsSelectionFrame extends AbstractTutoStep {
 	@Override
 	public String instructions() {
 		return "- Go to the \"Data selection\" tab.<br>"
-				+ "- Click on the gear in the \"Corpus\" area to open the frame which enables to edit the columns type.";
+				+ "- Click on the button <img src=\"file:./src/img/tool.png\"/> in the \"Corpus\" area to open the frame which enables to edit the columns type.";
 	}
 
 	@Override

@@ -27,8 +27,8 @@ public class OpenEditSimilarityFrame extends AbstractTutoStep {
 	@Override
 	public String instructions() {
 		return "- Go to the \"Data selection\" tab.<br>"
-				+ "- Click on the pencil in the \"Similarity scores\" area to open the frame which enables to edit the similarity.";
-	}
+				+ "- Click on the button <img src=\"file:./src/img/edit.png\"/> in the \"Similarity scores\" area to open the frame which enables to edit the similarity.";
+	}	
 
 	@Override
 	public String resultsComment() {

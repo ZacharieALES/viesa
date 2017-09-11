@@ -80,6 +80,8 @@ public class StandardViewControler{
 		/* Extract patterns */
 		Corpus.getCorpus().extractPatterns();
 		
+		System.out.println("SV: extract patterns");
+		
 	}
 	
 	public void executeClustering(ArrayList<AbstractClusteringMethod> clusteringToPerform){

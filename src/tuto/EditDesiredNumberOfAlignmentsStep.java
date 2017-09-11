@@ -19,7 +19,7 @@ public class EditDesiredNumberOfAlignmentsStep extends AbstractTutoStep {
 
 	@Override
 	public String description() {
-		return "Now that you know how to extract and evaluate alignments we will see what are the parameters and how do they influence the extraction results.<br><br>"
+		return "Now that you know how to extract and visualize alignments and patterns, we will see what are the parameters and how do they influence the extraction results.<br><br>"
 				+ "The first parameter is the desired number of alignments which enables to control the number of alignments obtained during an extraction.<br><br>"
 				+ "To each extracted alignment is associated a score. <br>"
 				+ "For a given extraction, if the desired number of alignments is equal to 2, only the 2 alignments with the highest score will be obtained.<br><br>"

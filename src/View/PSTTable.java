@@ -115,13 +115,13 @@ public class PSTTable extends JTable{
 
 
 		/* Set the size of the JDialog */
-//		Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-//		int screen_height = (int)screenSize.getHeight();
-//		int screen_width = (int)screenSize.getWidth();
+		Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+		int screen_height = (int)screenSize.getHeight();
+		int screen_width = (int)screenSize.getWidth();
 
 		/* +1 because the first column contains the name of the annotations */
 		//		int table_width = Math.min(screen_width,  0 + 85 * (annotationIndex.size()+1));
-//		int table_height = Math.min(screen_height,21 + 23*(annotationIndex.size()));
+		int table_height = Math.min(screen_height,21 + 23*(annotationIndex.size()));
 
 		this.setPreferredScrollableViewportSize(this.getPreferredSize());
 		this.setFillsViewportHeight(true);

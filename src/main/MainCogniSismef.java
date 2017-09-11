@@ -60,8 +60,6 @@ public class MainCogniSismef {
 		//			al_comment.add(11);
 
 		try {
-			Corpus.getCorpus().initialAnnotationColumns = al_annot;
-			Corpus.getCorpus().initialCommentColumns = al_comment;
 
 			Corpus.getCorpus().setColumnFormat(al_comment, al_annot, null);
 			Corpus.getCorpus().setAnnotationSimilarities(st);

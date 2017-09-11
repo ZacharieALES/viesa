@@ -171,7 +171,7 @@ public class ClusterTree extends JTree{
 					   Pattern p = (Pattern)node.getUserObject();
 					   StringBuffer buff = new StringBuffer();
 
-					   buff.append(" (id ");
+					   buff.append(" (");
 					   buff.append(p.getIndex());
 					   
 					   if(Corpus.getCorpus().computeClosePatterns)

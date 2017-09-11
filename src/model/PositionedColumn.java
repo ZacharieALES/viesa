@@ -1,5 +1,10 @@
 package model;
 
+/**
+ * Represents a column type and its position in the initial csv files
+ * @author zach
+ *
+ */
 public class PositionedColumn{
 	
 	public AbstractColumn<?> column;
