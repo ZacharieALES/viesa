@@ -17,8 +17,6 @@
 
 package model;
 
-import extraction.SABREParameter;
-
 public interface SABREObserver extends Observer{
 
 	public abstract void updateSABREParameters();

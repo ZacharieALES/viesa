@@ -19,8 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.naming.ldap.StartTlsRequest;
-
 import View.StandardView;
 import au.com.bytecode.opencsv.CSVReader;
 import exception.AbstractException;
@@ -845,8 +843,6 @@ public class MainVito {
 		separator.add('\t');
 		
 		/* Get the file name */
-		String[] temp = s_path.split("/");
-
 		CSVReader reader = null;
 		String[] currentLine = null;
 

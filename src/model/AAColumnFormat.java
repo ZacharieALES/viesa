@@ -23,7 +23,6 @@ import java.util.Comparator;
 import java.util.TreeSet;
 
 import exception.InvalidArgumentsToCreateAnAAColumnFormat;
-import extraction.PositiveScoreTable;
 
 
 public class AAColumnFormat {

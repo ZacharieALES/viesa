@@ -2,15 +2,13 @@ package main;
 
 import java.util.ArrayList;
 
-import model.AnnotationColumn;
-import model.Corpus;
 import View.StandardView;
-import exception.InvalidAnnotationIndex;
 import exception.InvalidArgumentsToCreateAnAAColumnFormat;
 import exception.UndefinedColumnFormatException;
 import extraction.PositiveScoreTable;
 import extraction.SABRE;
 import extraction.SABREParameter;
+import model.Corpus;
 
 public class MainChanoni {
 	

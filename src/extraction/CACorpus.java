@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.text.DefaultEditorKit.InsertBreakAction;
-
 import main.machine_learning.ClassifiedArray;
 import main.machine_learning.Data_converter;
 
@@ -279,8 +277,8 @@ public class CACorpus {
 	public static void main(String[] args){
 
 		String trainFile = "output_full_train";
-		String devFile = "output_full_dev";
-		String testFile = "output_full_test";
+//		String devFile = "output_full_dev";
+//		String testFile = "output_full_test";
 		
 		
 		System.out.print("Reading train file... ");

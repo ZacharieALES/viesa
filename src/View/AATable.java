@@ -37,7 +37,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import exception.InvalidNumberOfColumnsInInputFilesException;
 import model.AAColumnFormat.ColumnType;
 import model.AnnotatedArray;
 import model.Corpus;
@@ -152,10 +151,7 @@ public class AATable extends JTable implements ComponentListener{
 				i++;
 				min = Collections.min(maxColSize);
 								
-			}
-			
-			int potentialMinus = 0;
-			
+			}			
 	
 			/* The columns which have not be assigned (i.e., the larges columns) are to large. 
 			 * Give them a size equal to */

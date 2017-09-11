@@ -857,15 +857,10 @@ public class ClassRepresentativePatternExtractor implements Serializable{
 			nbOfContainedPatterns.put(aac.className, 0);
 		}
 
-		int numberOfFrequentPatterns = 0;
-
-
 		/* For each class */
 		for(int id_class = 0 ; id_class < this.l_cc.size() ; ++id_class){
 
 			AAClass aac = this.l_cc.get(id_class);
-
-			numberOfFrequentPatterns += aac.getL_p().size();
 
 			/* For each frequent pattern in this class */
 			for(FrequencedPattern fp : aac.getL_p()){
@@ -1249,8 +1244,6 @@ public class ClassRepresentativePatternExtractor implements Serializable{
 	 */
 	public boolean isCompatible(File f){
 
-		String fileName = f.getName();
-
 		if(corpus_name.equals(getDataSet(f))
 				&& getMinScore(f) == MINIMUM_SCORE
 				&& getMaxDist(f) == MAXIMAL_DISTANCE
@@ -1493,7 +1486,7 @@ public class ClassRepresentativePatternExtractor implements Serializable{
 
 	@XmlAttribute
 	public void setCurrentIteration(int ration) {
-		this.currentIteration = currentIteration;
+		this.currentIteration = ration;
 	}
 
 

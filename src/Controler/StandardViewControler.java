@@ -21,15 +21,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 
-import model.AnnotatedArray;
-import model.Corpus;
-import model.NumericalColumn;
 import clustering.AbstractClusteringMethod;
-import exception.InvalidAnnotationIndex;
 import exception.UndefinedColumnFormatException;
 import extraction.PositiveScoreTable;
 import extraction.SABRE;
 import extraction.SABREParameter;
+import model.AnnotatedArray;
+import model.Corpus;
+import model.NumericalColumn;
 
 
 public class StandardViewControler{

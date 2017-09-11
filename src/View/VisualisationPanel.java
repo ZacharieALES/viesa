@@ -87,7 +87,6 @@ public class VisualisationPanel extends JPanel{
 
 	private TitledBorder tb_table12 = BorderFactory.createTitledBorder("Overview");
 	private TitledBorder tb_tableAB = BorderFactory.createTitledBorder("Overview");
-	private TitledBorder tb_corpus = BorderFactory.createTitledBorder("Corpus");
 	private TitledBorder tb_cluster = BorderFactory.createTitledBorder("Clusters");
 		
 	/**
@@ -445,7 +444,6 @@ public class VisualisationPanel extends JPanel{
 				
 				labelText.append(p.getOriginalAA().getFileName());
 
-				TitledBorder tb;
 				JPanel panel;
 				JLabel mainLabel;
 				
@@ -463,7 +461,6 @@ public class VisualisationPanel extends JPanel{
 
 				if(!StandardView.getInstance().isCtrlPressed()){
 
-					tb = tb_table12;
 					panel = aaTablePanel12;
 					jbMainSwitchButton = jb_switchOrientation12;
 					isMainSwitchVertical = isVertical12;
@@ -487,7 +484,6 @@ public class VisualisationPanel extends JPanel{
 				}
 				else{
 
-					tb = tb_tableAB;
 					panel = aaTablePanelAB;
 					jbMainSwitchButton = jb_switchOrientationAB;
 					isMainSwitchVertical = isVerticalAB;

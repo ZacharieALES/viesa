@@ -11,10 +11,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Coordinate;
-import model.Corpus;
 import au.com.bytecode.opencsv.CSVReader;
 import exception.InvalidListToCreatePositiveScoreTable;
+import model.Coordinate;
+import model.Corpus;
 
 /**
  * A positive table score is a table which contains the score between all pairs of annotations.
@@ -26,11 +26,11 @@ public class PositiveScoreTable{
 	
 	private String sPath;
 	
-	/** Minimal positive value in the table */
-	private double minValue;
+//	/** Minimal positive value in the table */
+//	private double minValue;
 	
-	/** Minimal value in the table which is strictly positive */
-	private double minPositiveScore = -1;
+//	/** Minimal value in the table which is strictly positive */
+//	private double minPositiveScore = -1;
 	
 	protected double[][] values;
 	

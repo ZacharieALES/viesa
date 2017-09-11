@@ -23,7 +23,6 @@ import javax.swing.SwingWorker;
 
 import clustering.ClusteringSolution;
 import exception.AbstractException;
-import exception.InvalidNumberOfColumnsInInputFilesException;
 import extraction.PositiveScoreTable;
 
 public interface CorpusObserver extends Observer{

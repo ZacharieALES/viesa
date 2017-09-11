@@ -16,7 +16,6 @@
 //along with Viesa.  If not, see <http://www.gnu.org/licenses/>.
 
 package model;
-import java.awt.Point;
 import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlAttribute;

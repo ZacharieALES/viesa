@@ -1,30 +1,25 @@
 package View;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import exception.InvalidArgumentsToCreateAnAAColumnFormat;
-import exception.UndefinedColumnFormatException;
-import extraction.PositiveScoreTable;
 import extraction.SABRE;
 import extraction.SABREParameter;
-import main.Main;
 import main.MainCogniSismef;
 import main.MainTutorial;
 import model.Corpus;
 import net.miginfocom.swing.MigLayout;
 
 public class SelectCorpusFrame extends JFrame{
+
+	private static final long serialVersionUID = -4070320145031804723L;
 
 	public SelectCorpusFrame(){
 
@@ -55,7 +50,7 @@ public class SelectCorpusFrame extends JFrame{
 		JLabel jlTitle= new JLabel("<html><body><b>Select the desired software version</b></body></html>",SwingConstants.CENTER);
 		JLabel jlTuto = new JLabel("1 - Guided introduction of VIESA features"); 
 		JLabel jlPrefilled = new JLabel("2 - Pre-filled versions of known data corpus");
-		JLabel jlDefault = new JLabel("3 - Default version without any pre-filled information"); 
+//		JLabel jlDefault = new JLabel("3 - Default version without any pre-filled information"); 
 
 
 		JButton jbTuto = new JButton("Start the tutorial");

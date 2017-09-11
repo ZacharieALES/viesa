@@ -1,7 +1,5 @@
 package tuto;
 
-import javax.swing.JLabel;
-
 import View.SelectionPanel;
 import View.StandardView;
 import View.VisualisationPanel;

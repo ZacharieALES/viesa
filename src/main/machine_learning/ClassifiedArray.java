@@ -1,10 +1,5 @@
 package main.machine_learning;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import model.Alignment;
-
 public class ClassifiedArray {
 	
 	public String aClass;

@@ -1,6 +1,5 @@
 package tuto;
 
-import View.JIconButton;
 import main.MainTutorial;
 
 public class InitializationStep extends AbstractTutoStep {

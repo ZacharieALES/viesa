@@ -1,17 +1,11 @@
 package extraction;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
-
-import model.AnnotatedArray;
-import model.Coordinate;
-import model.Corpus;
-import model.Pattern;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Test;
+
+import model.AnnotatedArray;
 
 public class SABRETest {
 	static PositiveScoreTable st;

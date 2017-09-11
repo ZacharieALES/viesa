@@ -1,7 +1,5 @@
 package extraction;
 
-import model.Corpus;
-
 public class SABREParameter {
 	
 	public SABREParameter(double gap_cost,

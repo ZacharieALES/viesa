@@ -1,34 +1,9 @@
 package main;
 
-//TODO permettre à un utilisateur de filtrer les motifs selon certaines contraintes :
-// - motifs contenant des annotations dans telle colonne
-// - motifs contenant des valeurs différentes dans telle colonne
-
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.naming.ldap.StartTlsRequest;
 
 import View.StandardView;
-import au.com.bytecode.opencsv.CSVReader;
-import exception.AbstractException;
-import exception.CSVSeparatorNotFoundException;
 import exception.InvalidArgumentsToCreateAnAAColumnFormat;
-import exception.InvalidCSVFileNumberOfColumnsException;
-import exception.InvalidInputFileException;
-import exception.InvalidNumberOfColumnsInInputFilesException;
 import exception.UndefinedColumnFormatException;
 import extraction.PositiveScoreTable;
 import extraction.SABRE;
@@ -36,7 +11,6 @@ import extraction.SABREParameter;
 import model.AAColumnFormat;
 import model.AnnotationColumn;
 import model.Corpus;
-import model.NumericalColumn;
 
 public class MainDemo {
 	

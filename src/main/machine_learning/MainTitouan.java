@@ -13,7 +13,6 @@ import java.util.TreeSet;
 import View.StandardView;
 import exception.InvalidArgumentsToCreateAnAAColumnFormat;
 import exception.UndefinedColumnFormatException;
-import extraction.PositiveScoreTable;
 import extraction.SABRE;
 import extraction.SABREParameter;
 import model.Corpus;
@@ -26,7 +25,7 @@ public class MainTitouan {
 		Corpus.getCorpus().addObserver(sv);
 		SABRE.getInstance().addObserver(sv);
 
-		PositiveScoreTable st;
+//		PositiveScoreTable st;
 
 		String ldaSet = "f" + set;
 		String fo_path = "data/Dialogues_Titouan/csv/ldaset_" + ldaSet + "_5col_train_mlp_mallet";	
@@ -40,8 +39,8 @@ public class MainTitouan {
 		double gap = 2*desynch;
 
 		/* TODO Useless but does not open the window otherwise... */
-		String fo_path_temp = "data/Dialogues_parents_enfants/";						
-		st = new PositiveScoreTable(fo_path_temp + "couples_scores_positifs.csv");
+//		String fo_path_temp = "data/Dialogues_parents_enfants/";						
+//		st = new PositiveScoreTable(fo_path_temp + "couples_scores_positifs.csv");
 
 		SABRE.getInstance().setParam(new SABREParameter(gap, desynch)); 
 

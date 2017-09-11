@@ -452,12 +452,6 @@ public class LPCA4D{
 							/* Contains the maximum score for tS[i][j][k] */
 							double scoreMax = 0;
 
-							/*
-							 * Contains the indice of the better path (see tSMemory
-							 * definition for further details)
-							 */
-							int pathMax = 0;
-
 							int i = lastPosition.getI();
 							int j = lastPosition.getJ();
 							int k = lastPosition.getK();
@@ -491,9 +485,6 @@ public class LPCA4D{
 
 								if (tempScore > scoreMax) {
 									scoreMax = tempScore;
-
-									/* Case 7 and 8 give the same path */
-									pathMax = 7;
 								}
 
 								/* Case 7 */
@@ -515,7 +506,6 @@ public class LPCA4D{
 
 								if (tempScore > scoreMax) {
 									scoreMax = tempScore;
-									pathMax = 7;
 								}
 
 								/* Case 6 */
@@ -535,7 +525,6 @@ public class LPCA4D{
 
 								if (tempScore > scoreMax) {
 									scoreMax = tempScore;
-									pathMax = 6;
 								}
 
 								/* Case 5 */
@@ -555,7 +544,6 @@ public class LPCA4D{
 
 								if (tempScore > scoreMax) {
 									scoreMax = tempScore;
-									pathMax = 5;
 								}
 
 								/*
@@ -569,7 +557,6 @@ public class LPCA4D{
 
 								if (tempScore > scoreMax) {
 									scoreMax = tempScore;
-									pathMax = 3;
 								}
 
 								/* Case 1 */
@@ -581,7 +568,6 @@ public class LPCA4D{
 
 								if (tempScore > scoreMax) {
 									scoreMax = tempScore;
-									pathMax = 1;
 								}
 
 								/* Case other */
@@ -605,7 +591,6 @@ public class LPCA4D{
 
 								if (tempScore > scoreMax) {
 									scoreMax = tempScore;
-									pathMax = 1;
 								}	
 							}
 						}

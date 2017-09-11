@@ -398,6 +398,10 @@ public class MainMohamed {
 	public class ClassifiedAA extends AnnotatedArray{
 
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -9184982297758062552L;
 		String category;
 		public HashMap<String, ArrayList<Double>> scoreByCategories;
 		public HashMap<String, TreeSet<PointXMLSerializable>> coordinateCoveredByPatterns;

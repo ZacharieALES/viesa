@@ -87,7 +87,7 @@ public class Main {
 	}
 
 	public static void getNextCustomTableName() {
-		int i = getLatestCustomTableNumber()+1;
+//		int i = getLatestCustomTableNumber()+1;
 		
 	}
 	

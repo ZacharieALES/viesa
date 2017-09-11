@@ -222,9 +222,6 @@ public class CSVColumnsSelector extends JDialog implements AWTEventListener {
 		/* For each column in the column format */
 		for (int i = 0; i < Corpus.getCorpus().getTotalNumberOfColumns(); ++i) {
 
-			/* Get the column */
-			PositionedColumn pc = Corpus.getCorpus().getPositionedColumn(i);
-
 			int csvColId = Corpus.getCorpus().initialAnnotationColumns.get(i);
 
 			ColumnType type = null;

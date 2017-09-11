@@ -11,7 +11,11 @@ import model.AnnotatedArray;
 
 public class ClassifiedAA extends AnnotatedArray implements Serializable{
 
-    public String aa_class;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6334551472046741475L;
+	public String aa_class;
     
     public ClassifiedAA(){}
 

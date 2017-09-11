@@ -6,6 +6,8 @@ import model.AAColumnFormat.ColumnType;
 
 public class CommentColumn extends AbstractColumn<String> implements Serializable{
 
+	private static final long serialVersionUID = 4874019078017636060L;
+
 	@Override
 	public double sim(int a, String b) {
 		return 0;

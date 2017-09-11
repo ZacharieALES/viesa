@@ -1,7 +1,5 @@
 package tuto;
 
-import View.StandardView;
-
 public class FirstExtraction extends AbstractTutoStep {
 
 	@Override

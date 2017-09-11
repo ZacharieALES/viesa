@@ -1,6 +1,5 @@
 package extraction;
 
-import model.Position;
 import model.Position4D;
 
 /**
