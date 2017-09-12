@@ -1,5 +1,7 @@
 package tuto;
 
+import model.Corpus;
+
 public class EditSimilarity extends AbstractEditSimilarityStep	{	
 
 	@Override

@@ -690,7 +690,7 @@ public class Corpus implements Observable, Serializable {
 					}
 				}
 
-				System.out.println("Corpus : " + Corpus.getCorpus().getPatternSize() + " extracted patterns");
+//				System.out.println("Corpus : " + Corpus.getCorpus().getPatternSize() + " extracted patterns");
 
 				if (isCancelled()) {
 					this.done();

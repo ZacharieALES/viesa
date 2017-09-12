@@ -2,10 +2,15 @@ package View;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -14,6 +19,7 @@ import extraction.SABRE;
 import extraction.SABREParameter;
 import main.MainCogniSismef;
 import main.MainTutorial;
+import main.MainTutorial.StepWrapper;
 import model.Corpus;
 import net.miginfocom.swing.MigLayout;
 
@@ -28,9 +34,7 @@ public class SelectCorpusFrame extends JFrame{
 
 		try {
 
-			System.out.print(".");
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-			System.out.println(".");
 
 		} catch (ClassNotFoundException e1) {
 			e1.printStackTrace();
@@ -44,7 +48,7 @@ public class SelectCorpusFrame extends JFrame{
 			e.printStackTrace();
 		}
 
-		this.setLayout(new MigLayout("fill", "[]", "[]20[]10[]25[]10[]25[]10[]"));
+		this.setLayout(new MigLayout("fill", "[]", "[]20[]10[]10[]25[]10[]25[]10[]"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 
 		JLabel jlTitle= new JLabel("<html><body><b>Select the desired software version</b></body></html>",SwingConstants.CENTER);
@@ -53,7 +57,8 @@ public class SelectCorpusFrame extends JFrame{
 //		JLabel jlDefault = new JLabel("3 - Default version without any pre-filled information"); 
 
 
-		JButton jbTuto = new JButton("Start the tutorial");
+		JButton jbTuto = new JButton("Start the tutorial from the beginning");
+		JButton jbTutoSkipSteps = new JButton("Start the tutorial from a given step");
 		JButton jbDefault = new JButton("Start the default version");
 		JButton jbCogniCISMEF = new JButton("Open Cogni-CISMEF corpus");
 
@@ -61,7 +66,32 @@ public class SelectCorpusFrame extends JFrame{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				MainTutorial.run();
+				
+				MainTutorial.initialize();
+				MainTutorial.run(0);
+				
+				SelectCorpusFrame.this.dispose();
+			}
+		});
+
+		jbTutoSkipSteps.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				List<StepWrapper> hm = MainTutorial.initialize();
+				JPanel panel = new JPanel(new MigLayout("fill", "[]", "[][]"));
+				panel.add(new JLabel("Select in the box the tutorial step at which you want to start:"), "wrap");
+				
+				JComboBox<StepWrapper> jcb = new JComboBox<>();
+				
+				for(StepWrapper entry: hm)
+					jcb.addItem(entry);
+				
+				panel.add(jcb, "center");
+				JOptionPane.showMessageDialog(null,panel,"Step selection",JOptionPane.INFORMATION_MESSAGE);
+				 
+				MainTutorial.run(hm.get(jcb.getSelectedIndex()).stepNb);
 				
 				SelectCorpusFrame.this.dispose();
 			}
@@ -96,9 +126,10 @@ public class SelectCorpusFrame extends JFrame{
 			}
 		});
 
-		getContentPane().add(jlTitle, "center,wrap");
+		getContentPane().add(jlTitle, "center, wrap");
 		getContentPane().add(jlTuto, "wrap");
 		getContentPane().add(jbTuto, "center, wrap");
+		getContentPane().add(jbTutoSkipSteps, "center, wrap");
 		getContentPane().add(jlPrefilled, "wrap");
 		getContentPane().add(jbCogniCISMEF, "center");
 //		getContentPane().add(jbCogniCISMEF, "center, wrap");

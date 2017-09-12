@@ -114,6 +114,10 @@ public class CSVColumnsSelector extends JDialog implements AWTEventListener {
 			public void mousePressed(MouseEvent e) {
 
 				int idCol = csvTable.columnAtPoint(e.getPoint());
+				
+				if(!MainTutorial.IS_TUTO 
+						|| MainTutorial.getCurrentStep() instanceof EditColumnSelection
+						&& ((EditColumnSelection)MainTutorial.getCurrentStep()).modifiedColId == idCol){
 				ColumnType selectionValue = al_selection.get(idCol);
 
 				// if(e.getClickCount() == 1)
@@ -176,6 +180,11 @@ public class CSVColumnsSelector extends JDialog implements AWTEventListener {
 					csvTable.getTableHeader().repaint();
 					csvTable.repaint();
 				}
+				}
+				else
+					if(MainTutorial.getCurrentStep() instanceof EditColumnSelection)			
+								JOptionPane.showMessageDialog(StandardView.getInstance(), "<html>You tried to modify the column type of column n°" + (idCol + 1) + ".<br>"
+										+ "Please modify column n°" + (((EditColumnSelection)MainTutorial.getCurrentStep()).modifiedColId + 1) + " instead.</html>");
 
 			}
 
@@ -207,7 +216,22 @@ public class CSVColumnsSelector extends JDialog implements AWTEventListener {
 		jb_ok.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				CSVColumnsSelector.this.confirm();
+				EditColumnSelection ecs = null;
+				if(MainTutorial.IS_TUTO && MainTutorial.getCurrentStep() instanceof EditColumnSelection)
+					ecs = (EditColumnSelection)MainTutorial.getCurrentStep();
+				
+				if(ecs == null
+						|| ecs.modifiedColType.equals(al_selection.get(ecs.modifiedColId))){
+					
+					if(ecs != null && !ecs.performExtraction)
+						MainTutorial.nextStep();
+					
+					CSVColumnsSelector.this.confirm();
+				}
+				else
+					JOptionPane.showMessageDialog(StandardView.getInstance(), "<html>The type of column n°" + (ecs.modifiedColId + 1) + " is currently \"" + al_selection.get(ecs.modifiedColId).getName() + "\".<br>"
+							+ "Please set this column to the type \"" + ecs.modifiedColType.getName() +"\"</html>");
+				
 			}
 		});
 
@@ -219,7 +243,10 @@ public class CSVColumnsSelector extends JDialog implements AWTEventListener {
 
 		JPanel jp_button = new JPanel(new MigLayout("", "push[][]", ""));
 		jp_button.add(jb_ok);
-		jp_button.add(jb_cancel);
+
+		if(!MainTutorial.IS_TUTO || !(MainTutorial.getCurrentStep() instanceof EditColumnSelection))
+			jp_button.add(jb_cancel);
+		
 		jp_button.add(jhb_help);
 
 		jp.add(csvTable.getJSP(), "grow, wrap");
@@ -230,36 +257,16 @@ public class CSVColumnsSelector extends JDialog implements AWTEventListener {
 	}
 
 	public void setPreviousColumnsSelection() {
-
-		int visibleColumnsNb = 0;
-
+		
 		/* For each column in the column format */
 		for (int i = 0; i < Corpus.getCorpus().getTotalNumberOfColumns(); ++i) {
 
 			/* Get the column */
 			PositionedColumn pc = Corpus.getCorpus().getPositionedColumn(i);
 
-			//		/* For each column in the initial annotations columns */
-			//		for (int i = 0; i < Corpus.getCorpus().initialAnnotationColumns.size() ; ++i) {
-			//
-			//			int csvColId = Corpus.getCorpus().initialAnnotationColumns.get(i);
-			//
-			//			int id = 0;
-			//			
-			//			while(type == null && id < Corpus.getCorpus().getTotalNumberOfColumns()){
-			//
-			//				if(Corpus.getCorpus().getPositionedColumn(id).position == csvColId)
-			//					type = Corpus.getCorpus().getPositionedColumn(id).column.getType();
-			//				else
-			//					id++;
-			//
-			//			}
-
-			al_selection.set(visibleColumnsNb, pc.column.getType());
+			al_selection.set(pc.position, pc.column.getType());
 			csvTable.getColumnModel().getColumn(pc.position)
 			.setHeaderValue(pc.column.getType().getName());
-
-			visibleColumnsNb++;
 
 		}
 

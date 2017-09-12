@@ -32,4 +32,12 @@ public class ChangeDisplayedAlignment extends AbstractTutoStep {
 		return normalClickOnAlignmentPerformed && ctrlClickOnAlignmentPerformed;
 	}
 
+	@Override
+	public String gotoName() {
+		return null;
+	}
+
+	@Override
+	public void actionsIfSkipped() {}
+
 }

@@ -705,7 +705,7 @@ public class StandardView extends JFrame implements CorpusObserver,
 			jdpb.setVisible(false);
 			tab.setSelectedIndex(1);
 			this.setExtendedState(this.getExtendedState()|JFrame.MAXIMIZED_BOTH );
-			VisualisationPanel.getInstance().displayFirstTwoClusters();
+			VisualisationPanel.getInstance().displayFirstFourPatterns();
 		}
 	}
 	

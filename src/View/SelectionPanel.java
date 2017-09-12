@@ -54,6 +54,8 @@ import model.Corpus;
 import net.miginfocom.swing.MigLayout;
 import tuto.EditDesiredNumberOfAlignmentsStep;
 import tuto.EditGap;
+import tuto.EditMaximalSimilarity;
+import tuto.FirstClustering;
 import tuto.OpenEditSimilarityFrame;
 import util.springbox.AAReader;
 
@@ -430,9 +432,43 @@ public class SelectionPanel extends JPanel{
 
 			}
 		});
+		
+		jtf_maxSim.addFocusListener(new FocusListener(){
+
+			@Override
+			public void focusGained(FocusEvent e) {
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+
+				if(MainTutorial.IS_TUTO && MainTutorial.getCurrentStep() != null && MainTutorial.getCurrentStep() instanceof EditMaximalSimilarity){
+
+					EditMaximalSimilarity ems = ((EditMaximalSimilarity)MainTutorial.getCurrentStep());
+					
+					if(Double.parseDouble(jtf_maxSim.getText()) == ems.newParameterValue)
+						ems.hasValueBeenChanged = true;
+					else
+						JOptionPane.showMessageDialog(SelectionPanel.this, "Please set the maximal similarity to " + ems.newParameterValue + " before starting the extraction.");
+				}
+
+				setMaxSim(Double.parseDouble(jtf_maxSim.getText()));
+			}
+
+		});
 
 		jtf_maxSim.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+
+				if(MainTutorial.IS_TUTO && MainTutorial.getCurrentStep() != null && MainTutorial.getCurrentStep() instanceof EditMaximalSimilarity){
+
+					EditMaximalSimilarity ems = ((EditMaximalSimilarity)MainTutorial.getCurrentStep());
+					
+					if(Double.parseDouble(jtf_maxSim.getText()) == ems.newParameterValue)
+						ems.hasValueBeenChanged = true;
+					else
+						JOptionPane.showMessageDialog(SelectionPanel.this, "Please set the maximal similarity to " + ems.newParameterValue + " before starting the extraction.");
+				}
 
 				setMaxSim(Double.parseDouble(jtf_maxSim.getText()));	
 
@@ -467,6 +503,15 @@ public class SelectionPanel extends JPanel{
 
 				setDesynchCost(Double.parseDouble(jtf_gap_score.getText())/2.0);	
 
+				if(MainTutorial.IS_TUTO && MainTutorial.getCurrentStep() != null && MainTutorial.getCurrentStep() instanceof EditGap){
+
+					EditGap cdnas = ((EditGap)MainTutorial.getCurrentStep());
+					if(Double.parseDouble(jtf_gap_score.getText()) == cdnas.newParameterValue)
+						cdnas.hasValueBeenChanged = true;
+					else
+						JOptionPane.showMessageDialog(SelectionPanel.this, "Please set the gap cost to " + cdnas.newParameterValue + " before starting the extraction.");
+				}		
+
 			}
 		});
 
@@ -498,6 +543,15 @@ public class SelectionPanel extends JPanel{
 		jtf_desired_nb_of_alignments.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				setDesiredNumberOfAlignments(Integer.parseInt(jtf_desired_nb_of_alignments.getText()));
+
+				if(MainTutorial.IS_TUTO && MainTutorial.getCurrentStep() != null && MainTutorial.getCurrentStep() instanceof EditDesiredNumberOfAlignmentsStep){
+
+					EditDesiredNumberOfAlignmentsStep cdnas = ((EditDesiredNumberOfAlignmentsStep)MainTutorial.getCurrentStep());
+					if(Integer.parseInt(jtf_desired_nb_of_alignments.getText()) == cdnas.newParameterValue)
+						cdnas.hasValueBeenChanged = true;
+					else
+						JOptionPane.showMessageDialog(SelectionPanel.this, "Please set the desired number of alignments to " + cdnas.newParameterValue + " before starting the extraction.");
+				}
 			}
 		});
 
@@ -548,7 +602,10 @@ public class SelectionPanel extends JPanel{
 
 		jb_process_extraction_and_clustering.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){		
-				sv.process_extraction_and_clustering();			
+				sv.process_extraction_and_clustering();
+				
+				if(MainTutorial.IS_TUTO && MainTutorial.getCurrentStep() instanceof FirstClustering)
+					MainTutorial.nextStep();
 			}
 		});
 
@@ -562,12 +619,17 @@ public class SelectionPanel extends JPanel{
 						if(MainTutorial.getCurrentStep() instanceof EditDesiredNumberOfAlignmentsStep 
 								&& !((EditDesiredNumberOfAlignmentsStep)MainTutorial.getCurrentStep()).hasValueBeenChanged
 								){
-							JOptionPane.showMessageDialog(SelectionPanel.this, "Please change the desire number of alignments before starting a new extraction");
+							JOptionPane.showMessageDialog(SelectionPanel.this, "Please set the desire number of alignments to " + ((EditDesiredNumberOfAlignmentsStep)MainTutorial.getCurrentStep()) + " before starting a new extraction");
 						}
 						else if(MainTutorial.getCurrentStep() instanceof EditGap 
 								&& !((EditGap)MainTutorial.getCurrentStep()).hasValueBeenChanged
 								){
-							JOptionPane.showMessageDialog(SelectionPanel.this, "Please change the gap cost before starting a new extraction");
+							JOptionPane.showMessageDialog(SelectionPanel.this, "Please set the gap cost to " + ((EditGap)MainTutorial.getCurrentStep()).newParameterValue + "before starting a new extraction");
+						}
+						else if(MainTutorial.getCurrentStep() instanceof EditMaximalSimilarity 
+								&& !((EditMaximalSimilarity)MainTutorial.getCurrentStep()).hasValueBeenChanged
+								){
+							JOptionPane.showMessageDialog(SelectionPanel.this, "Please set the maximal similarity to " + ((EditMaximalSimilarity)MainTutorial.getCurrentStep()).newParameterValue + " before starting a new extraction");
 						}
 						else{
 							MainTutorial.nextStep();

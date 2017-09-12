@@ -41,4 +41,12 @@ public class FinalizationStep extends AbstractTutoStep {
 		return null;
 	}
 
+	@Override
+	public String gotoName() {
+		return null;
+	}
+
+	@Override
+	public void actionsIfSkipped() {}
+
 }

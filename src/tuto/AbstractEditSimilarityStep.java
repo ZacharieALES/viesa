@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import extraction.SABRE;
+import model.AnnotationColumn;
+import model.Corpus;
+
 public abstract class AbstractEditSimilarityStep extends AbstractTutoStep {
 
 	public List<EditOperation> loperations = new ArrayList<>();
@@ -102,6 +106,20 @@ public abstract class AbstractEditSimilarityStep extends AbstractTutoStep {
 	@Override
 	public String resultsComment() {
 		return null;
+	}
+
+	@Override
+	public String gotoName() {
+		return null;
+	}
+
+	@Override
+	public void actionsIfSkipped() {
+		for(EditOperation eo: this.loperations){
+			int firstIndex = Corpus.getCorpus().getAnnotationIndex(eo.a1);
+			int secondIndex = Corpus.getCorpus().getAnnotationIndex(eo.a2);
+			AnnotationColumn.pst.setSimilarity(firstIndex, secondIndex, eo.valueToSet);
+		}
 	}
 
 }

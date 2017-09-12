@@ -40,4 +40,12 @@ public class ChangeDisplayedPattern extends AbstractTutoStep {
 		return displayedIn1stTable && displayedIn2ndTable && displayedIn3rdTable && displayedIn4thTable;
 	}
 
+	@Override
+	public String gotoName() {
+		return null;
+	}
+
+	@Override
+	public void actionsIfSkipped() {}
+
 }

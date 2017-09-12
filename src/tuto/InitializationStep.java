@@ -24,6 +24,7 @@ public class InitializationStep extends AbstractTutoStep {
 
 		getVisualisationPanel().jb_switchOrientation12.setEnabled(false);
 		getVisualisationPanel().jb_switchOrientationAB.setEnabled(false);
+		getVisualisationPanel().cscb.setEnabled(false);
 		
 		MainTutorial.nextStep();
 	}
@@ -45,5 +46,13 @@ public class InitializationStep extends AbstractTutoStep {
 	public String resultsComment() {
 		return null;
 	}
+
+	@Override
+	public String gotoName() {
+		return null;
+	}
+
+	@Override
+	public void actionsIfSkipped() {}
 
 }

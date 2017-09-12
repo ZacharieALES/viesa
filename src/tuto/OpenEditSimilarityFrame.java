@@ -2,6 +2,15 @@ package tuto;
 
 public class OpenEditSimilarityFrame extends AbstractTutoStep {
 
+	private static int idCount = 1;
+	
+	private int id;
+	
+	public OpenEditSimilarityFrame() {
+		super();
+		id = idCount;
+		idCount++;
+	}
 
 	@Override
 	public void stepInitialization() {
@@ -34,5 +43,13 @@ public class OpenEditSimilarityFrame extends AbstractTutoStep {
 	public String resultsComment() {
 		return null;
 	}
+
+	@Override
+	public String gotoName() {
+		return "Edit similarities n°" + id;
+	}
+
+	@Override
+	public void actionsIfSkipped() {}
 
 }

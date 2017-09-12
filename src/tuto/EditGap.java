@@ -1,5 +1,8 @@
 package tuto;
 
+import extraction.SABRE;
+import extraction.SABREParameter;
+
 public class EditGap extends AbstractTutoStep {
 
 	public double newParameterValue;
@@ -78,6 +81,16 @@ public class EditGap extends AbstractTutoStep {
   +"</tr>"
 +"</table>"
 				+ "We call this type of configuration a <i>desynchronization</i>. It may lead to alignments which patterns have different shapes.";
+	}
+
+	@Override
+	public String gotoName() {
+		return "Edit the gap cost";
+	}
+
+	@Override
+	public void actionsIfSkipped() {
+		SABRE.getInstance().setParam(new SABREParameter(this.newParameterValue, this.newParameterValue/2)); 
 	}
 
 }

@@ -2,6 +2,16 @@ package tuto;
 
 public class OpenColumnsSelectionFrame extends AbstractTutoStep {
 
+	private static int idCount = 1;
+	
+	private int id;
+	
+	public OpenColumnsSelectionFrame() {
+		super();
+		id = idCount;
+		idCount++;
+	}
+	
 	@Override
 	public void stepInitialization() {
 		getSelectionPanel().jb_tool.setEnabled(true);
@@ -28,5 +38,13 @@ public class OpenColumnsSelectionFrame extends AbstractTutoStep {
 	public String resultsComment() {
 		return null;
 	}
+
+	@Override
+	public String gotoName() {
+		return "Edit columns type n°" + id;
+	}
+
+	@Override
+	public void actionsIfSkipped() {}
 
 }

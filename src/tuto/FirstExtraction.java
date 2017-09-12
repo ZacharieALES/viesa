@@ -40,4 +40,12 @@ public class FirstExtraction extends AbstractTutoStep {
 				+ "The annotations which are part of an alignment are displayed in red.";
 	}
 
+	@Override
+	public String gotoName() {
+		return "Extract patterns";
+	}
+
+	@Override
+	public void actionsIfSkipped() {}
+
 }

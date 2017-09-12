@@ -1,5 +1,7 @@
 package tuto;
 
+import model.Corpus;
+
 public class EditDesiredNumberOfAlignmentsStep extends AbstractTutoStep {
 
 	public boolean hasValueBeenChanged = false;
@@ -38,6 +40,16 @@ public class EditDesiredNumberOfAlignmentsStep extends AbstractTutoStep {
 	@Override
 	public String resultsComment() {
 		return "You can see that the number of obtained alignments is now higher";
+	}
+
+	@Override
+	public String gotoName() {
+		return "Set desired number of alignments";
+	}
+
+	@Override
+	public void actionsIfSkipped() {
+		Corpus.getCorpus().setDesiredNumberOfAlignments(this.newParameterValue);
 	}
 
 }

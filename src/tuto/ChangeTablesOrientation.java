@@ -34,4 +34,16 @@ public class ChangeTablesOrientation extends AbstractTutoStep {
 		return horizontalClicked && verticalClicked;
 	}
 
+	@Override
+	public String gotoName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void actionsIfSkipped() {
+		getVisualisationPanel().jb_switchOrientation12.setEnabled(true);
+		getVisualisationPanel().jb_switchOrientationAB.setEnabled(true);
+	}
+
 }

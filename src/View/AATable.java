@@ -187,7 +187,7 @@ public class AATable extends JTable implements ComponentListener{
 			
 						
 			/* Set the size of each column */
-			for(int j = 0 ; j < aaTableModel.getColumnCount() ; j++){
+			for(int j = 0 ; j < nbOfColumns ; j++){
 	
 				TableColumn column = this.getColumnModel().getColumn(j);
 				column.setPreferredWidth(columnSize[j]);

@@ -1,6 +1,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -11,19 +12,24 @@ import exception.UndefinedColumnFormatException;
 import extraction.PositiveScoreTable;
 import extraction.SABRE;
 import extraction.SABREParameter;
+import model.AAColumnFormat.ColumnType;
 import model.Corpus;
 import tuto.AbstractTutoStep;
 import tuto.ChangeDisplayedAlignment;
+import tuto.ChangeDisplayedCluster;
+import tuto.ChangeDisplayedClusterSet;
+import tuto.ChangeDisplayedClusteringMethod;
 import tuto.ChangeDisplayedPattern;
 import tuto.ChangeTablesOrientation;
-import tuto.CompleteNonOptimalPatterns;
 import tuto.EditColumnSelection;
 import tuto.EditDesiredNumberOfAlignmentsStep;
 import tuto.EditGap;
+import tuto.EditMaximalSimilarity;
 import tuto.EditSimilarity;
 import tuto.EditSimilarityCombobox;
 import tuto.EditSimilarityTable;
-import tuto.EvaluateAlignment;
+import tuto.FinalizationStep;
+import tuto.FirstClustering;
 import tuto.FirstExtraction;
 import tuto.InitializationStep;
 import tuto.OpenColumnsSelectionFrame;
@@ -38,147 +44,14 @@ public class MainTutorial {
 	public static int currentStepId = -1;
 	public static int desiredNumberOfClusters = 3;
 	public static int gap = 100;
-	public static boolean setSimBBTo0 = false;
-	public static boolean setSimABTo5 = false;
-	public static boolean setSimBBTo10 = false;
 
-	public static boolean skipNextStep = true;
-	public static void run(){
+	public static void run(int startingStep){
 
-		MainTutorial.IS_TUTO = true;
-		Main.hasHeader = false;
-
-		lSteps.add(new InitializationStep());
-
-		if(!skipNextStep){
-			lSteps.add(new FirstExtraction());
-			lSteps.add(new ChangeDisplayedAlignment());
-			lSteps.add(new ChangeDisplayedPattern());
-			lSteps.add(new ChangeTablesOrientation());
-		}
-
-		if(skipNextStep)
-			desiredNumberOfClusters = 5;
-		else
-			lSteps.add(new EditDesiredNumberOfAlignmentsStep());
-
-		if(skipNextStep){
-
-			setSimBBTo0 = true;
-
-		}
-		else{
-			lSteps.add(new OpenEditSimilarityFrame());
-
-			EditSimilarityTable est = new EditSimilarityTable(){
-
-				@Override
-				public String resultsComment() {
-					return "You can observe that annotation 'B' does not appear anymore in the alignments.<br>"
-							+ "That is why, setting a similarity to 0 may sometime be a little extreme. <br>"
-							+ "An alternative is to decrease sim(B,B) but keep it strictly positive (so that B can still be aligned with itself in the results).";
-				}
-			};
-
-			est.loperations.add(est.new EditOperation(0, "B", "B"));
-
-			lSteps.add(est);
-		}
-
-		if(skipNextStep){
-			setSimABTo5 = true;
-		}
-		else{
-			OpenEditSimilarityFrame oesf = new OpenEditSimilarityFrame(){
-				@Override
-				public String description() {
-					return "Now we will see another way of editing the inter-annotation similarities.";
-				};
-			};
-
-			lSteps.add(oesf);
-
-
-			EditSimilarityCombobox esc = new EditSimilarityCombobox(){
-
-				@Override
-				public String resultsComment() {
-					return "As you can observe the alignments are now very big and contain many annotations \".\".<br>"
-							+ "This is due to the fact that this annotation appears a lot in the considered arrays of annotation.<br><br>"
-							+ "The obtained alignments are so big that it seems hard to find interesting regularities among them.<br>"
-							+ "To avoid this, we will set sim(.,.) back to 0.";
-				}
-			};
-
-			esc.loperations.add(esc.new EditOperation(5, "A", "B"));
-			esc.loperations.add(esc.new EditOperation(1, ".", "."));
-
-			lSteps.add(esc);
-		}
-
-		if(skipNextStep){
-			
-			setSimBBTo10 = true;
-
-		}
-		else{
-			OpenEditSimilarityFrame oesf = new OpenEditSimilarityFrame(){
-				@Override
-				public String description() {
-					return "";
-				};
-			};
-
-			lSteps.add(oesf);
-			EditSimilarity es = new EditSimilarity();
-
-			es.loperations.add(es.new EditOperation(0, ".", "."));
-			es.loperations.add(es.new EditOperation(10, "B", "B"));
-
-			lSteps.add(es);
-		}
-		
-		if(skipNextStep){
-			gap = 10;
-		}
-		else
-			lSteps.add(new EditGap(10));
-		
-		
-		lSteps.add(new OpenColumnsSelectionFrame());
-		lSteps.add(new EditColumnSelection());
-
-		//		lSteps.add(new OpenColumnsSelectionFrame());
-		//		lSteps.add(new EditColumnSelection());
-		//		lSteps.add(new CompleteNonOptimalPatterns());
-
+		/* Set the tutorial corpus */
 		PositiveScoreTable st;
 
 		Main.scoreFolder = "data/Tutorial";
 		st = new PositiveScoreTable(Main.scoreFolder + "/tuto_scores.csv");
-
-		if(setSimBBTo0){
-			int bIndex = Corpus.getCorpus().getAnnotationIndex("B");
-			st.setSimilarity(bIndex, bIndex, 0);
-		}
-
-		if(setSimABTo5){
-
-			int bIndex = Corpus.getCorpus().getAnnotationIndex("B");
-			int aIndex = Corpus.getCorpus().getAnnotationIndex("A");
-			int ptIndex = Corpus.getCorpus().getAnnotationIndex(".");
-			st.setSimilarity(bIndex, aIndex, 5);
-			st.setSimilarity(ptIndex, ptIndex, 1);
-		}
-		
-		if(setSimBBTo10){
-
-			int bIndex = Corpus.getCorpus().getAnnotationIndex("B");
-			int ptIndex = Corpus.getCorpus().getAnnotationIndex(".");
-			st.setSimilarity(bIndex, bIndex, 10);
-			st.setSimilarity(ptIndex, ptIndex, 0);
-			
-		}
 
 		//		String fo_path = "data/Cogni-CISMEF/dialogues/01";		
 		String fo_path = Main.scoreFolder + "/csv";		
@@ -195,12 +68,6 @@ public class MainTutorial {
 		al_annot.add(1);
 		al_annot.add(2);
 		al_annot.add(3);
-		//			al_comment.add(6);
-		//			al_comment.add(7);
-		//			al_comment.add(8);
-		//			al_comment.add(9);
-		//			al_comment.add(10);
-		//			al_comment.add(11);
 
 		try {
 
@@ -214,20 +81,28 @@ public class MainTutorial {
 
 			SABRE.getInstance().setParam(new SABREParameter(gap, gap/2)); 
 			Corpus.getCorpus().setDesiredNumberOfAlignments(desiredNumberOfClusters);
+			sv.jf_s.jtf_K.setText("3");
 
-			Corpus.getCorpus().setMaxDistance(0.0);
+			Corpus.getCorpus().setMaxDistance(5.0);
 
 			MainTutorial.nextStep();
+			
+			for(int i = 1 ; i < startingStep ; i++){
+				MainTutorial.getCurrentStep().actionsIfSkipped();
+				MainTutorial.nextStep();
+			}
 
-			JOptionPane.showMessageDialog(sv, "<html>This tutorial will present the software and its features in several steps.<br><br>"
-					+ "At each step you will find at the bottom of the frame:<br> "
-					+ "- a description of the current step;<br>"
-					+ "- instructions to go to the next step.<br><br>"
-					+ "If you have any problem/comment/suggestion related to this software please feel free to contact me: zacharie.ales@univ-avignon.fr</html>");
+			if(startingStep == 0)
+				JOptionPane.showMessageDialog(sv, "<html>This tutorial will present the software and its features in several steps.<br><br>"
+						+ "At each step you will find at the bottom of the frame:<br> "
+						+ "- a description of the current step;<br>"
+						+ "- instructions to go to the next step.<br><br>"
+						+ "If you have any problem/comment/suggestion related to this software please feel free to contact me: zacharie.ales@univ-avignon.fr</html>");
 
 
 
-		} catch (UndefinedColumnFormatException e) {e.printStackTrace();} catch (InvalidArgumentsToCreateAnAAColumnFormat e) {
+		} catch (UndefinedColumnFormatException e) {e.printStackTrace();} 
+		catch (InvalidArgumentsToCreateAnAAColumnFormat e) {
 			e.printStackTrace();
 		}
 
@@ -257,5 +132,147 @@ public class MainTutorial {
 			newStep.stepInitialization();
 		}
 
+	}
+
+	/**
+	 * Initialize the tutorial step
+	 * @return A HashMap that will contain the steps at which it will be possible to directly go. An HashMap item Integer corresponds to the number of the step (starts at 0), the String corresponds to the description of the step.  
+	 */
+	public static List<StepWrapper> initialize() {
+		MainTutorial.IS_TUTO = true;
+		Main.hasHeader = false;
+
+		/* Set the tutorial steps */
+		lSteps.add(new InitializationStep());
+
+		lSteps.add(new FirstExtraction());
+		lSteps.add(new ChangeDisplayedAlignment());
+		lSteps.add(new ChangeDisplayedPattern());
+		lSteps.add(new ChangeTablesOrientation());
+
+		lSteps.add(new EditDesiredNumberOfAlignmentsStep());
+		lSteps.add(new OpenEditSimilarityFrame());
+
+		EditSimilarityTable est = new EditSimilarityTable(){
+
+			@Override
+			public String resultsComment() {
+				return "You can observe that annotation 'B' does not appear anymore in the alignments.<br>"
+						+ "That is why, setting a similarity to 0 may sometime be a little extreme. <br>"
+						+ "An alternative is to decrease sim(B,B) but keep it strictly positive (so that B can still be aligned with itself in the results).";
+			}
+		};
+
+		est.loperations.add(est.new EditOperation(0, "B", "B"));
+
+		lSteps.add(est);
+
+		OpenEditSimilarityFrame oesf = new OpenEditSimilarityFrame(){
+			@Override
+			public String description() {
+				return "Now we will see another way of editing the inter-annotation similarities.";
+			};
+		};
+
+		lSteps.add(oesf);
+
+
+		EditSimilarityCombobox esc = new EditSimilarityCombobox(){
+
+			@Override
+			public String resultsComment() {
+				return "As you can observe the alignments are now very big and contain many annotations \".\".<br>"
+						+ "This is due to the fact that this annotation appears a lot in the considered arrays of annotation.<br><br>"
+						+ "The obtained alignments are so big that it seems hard to find interesting regularities among them.<br>"
+						+ "To avoid this, we will set sim(.,.) back to 0.";
+			}
+		};
+
+		esc.loperations.add(esc.new EditOperation(5, "A", "B"));
+		esc.loperations.add(esc.new EditOperation(1, ".", "."));
+
+		lSteps.add(esc);
+
+		oesf = new OpenEditSimilarityFrame(){
+			@Override
+			public String description() {
+				return "";
+			};
+		};
+
+		lSteps.add(oesf);
+		EditSimilarity es = new EditSimilarity();
+
+		es.loperations.add(es.new EditOperation(0, ".", "."));
+		es.loperations.add(es.new EditOperation(10, "B", "B"));
+
+		lSteps.add(es);
+
+		lSteps.add(new EditGap(10));
+		lSteps.add(new FirstClustering());
+		lSteps.add(new ChangeDisplayedCluster());
+		lSteps.add(new ChangeDisplayedClusterSet());
+		lSteps.add(new ChangeDisplayedClusteringMethod());
+
+		lSteps.add(new OpenColumnsSelectionFrame());
+		lSteps.add(new EditColumnSelection());
+
+		lSteps.add(new OpenColumnsSelectionFrame(){
+			@Override
+			public String description(){return "We will now explain the role of column type \"Numerical\".";}
+		});
+
+		EditColumnSelection ecs = new EditColumnSelection(){
+			@Override
+			public String description(){
+				return "The column type \"Numerical\" is simply used when a column contains numerical values.";
+			}
+
+			@Override
+			public String resultsComment() {
+				return "You can see that numerical values appear in some alignments.";
+			}
+		};
+		ecs.modifiedColId = 4;
+		ecs.modifiedColType = ColumnType.NUMERICAL_ANNOTATION;
+		ecs.originalColType = ColumnType.NONE;
+		ecs.performExtraction = true;
+
+		lSteps.add(ecs);
+
+		lSteps.add(new EditMaximalSimilarity());
+
+		lSteps.add(new FinalizationStep());
+		
+		List<StepWrapper> result = new ArrayList<>();
+		
+		
+		for(int i = 0 ; i < lSteps.size() ; i++){
+			
+			AbstractTutoStep ats = lSteps.get(i);
+			
+			if(ats.gotoName() != null)
+				result.add(new StepWrapper(i, ats.gotoName()));
+		}
+		
+		return result;
+
+
+	}
+	
+	public static class StepWrapper{
+		
+		public int stepNb;
+		public String stepDescription;
+		
+		public StepWrapper(int stepNb, String stepDescription){
+			this.stepNb = stepNb;
+			this.stepDescription = stepDescription;
+		}
+		
+		@Override
+		public String toString(){
+			return "Step n°" + stepNb + " - " + stepDescription;
+		}
 	}
 }

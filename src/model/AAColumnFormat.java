@@ -20,6 +20,7 @@ package model;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.TreeSet;
 
 import exception.InvalidArgumentsToCreateAnAAColumnFormat;
@@ -77,7 +78,7 @@ public class AAColumnFormat {
 
 	private ArrayList<String> columnHeader;
 	
-	public AAColumnFormat(ArrayList<PositionedColumn> columns) throws InvalidArgumentsToCreateAnAAColumnFormat{
+	public AAColumnFormat(List<PositionedColumn> columns) throws InvalidArgumentsToCreateAnAAColumnFormat{
 		
 		initialize(columns);
 		
@@ -104,7 +105,7 @@ public class AAColumnFormat {
 		
 	}
 	
-	private void initialize(ArrayList<PositionedColumn> columns) throws InvalidArgumentsToCreateAnAAColumnFormat{
+	private void initialize(List<PositionedColumn> columns) throws InvalidArgumentsToCreateAnAAColumnFormat{
 		
 		/* Check that <columns> contains at least one column which is not a comment column */
 		boolean is_valid = false;

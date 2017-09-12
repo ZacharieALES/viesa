@@ -20,12 +20,14 @@ package View;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -35,7 +37,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JWindow;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -52,9 +57,11 @@ import model.Corpus;
 import model.Pattern;
 import net.miginfocom.swing.MigLayout;
 import tuto.ChangeDisplayedAlignment;
+import tuto.ChangeDisplayedCluster;
+import tuto.ChangeDisplayedClusterSet;
+import tuto.ChangeDisplayedClusteringMethod;
 import tuto.ChangeDisplayedPattern;
 import tuto.ChangeTablesOrientation;
-import tuto.FirstExtraction;
 
 //@SuppressWarnings("serial")
 public class VisualisationPanel extends JPanel{
@@ -71,7 +78,7 @@ public class VisualisationPanel extends JPanel{
 
 	private List<Color> tableColor = new ArrayList<>();
 
-	private JSlider slider = null;
+	public JSlider slider = null;
 
 	private JLabel jl_o1 = new JLabel(": to use it");
 	private JLabel jl_o2 = new JLabel(": to use it");
@@ -104,7 +111,7 @@ public class VisualisationPanel extends JPanel{
 	private boolean isVerticalAB = false;
 
 
-	private CSComboBox cscb = new CSComboBox();
+	public CSComboBox cscb = new CSComboBox();
 
 	private VisualisationPanel(){
 
@@ -133,6 +140,9 @@ public class VisualisationPanel extends JPanel{
 
 			public void actionPerformed(ActionEvent e){		
 				displayCBSelection();
+				
+				if(MainTutorial.IS_TUTO && MainTutorial.getCurrentStep() instanceof ChangeDisplayedClusterSet)
+					MainTutorial.nextStep();
 			}
 
 		});
@@ -158,7 +168,36 @@ public class VisualisationPanel extends JPanel{
 		table1.emptyTable();
 		table2.emptyTable();
 
-		slider = new JSlider(JSlider.HORIZONTAL);
+
+		try {
+			/* Used to hide the jslider label with the current look and feel used:
+			 * see: https://stackoverflow.com/questions/4460840/remove-value-displaying-over-thumb-in-jslider
+			 */
+			Class<?> sliderUIClass = Class.forName("javax.swing.plaf.synth.SynthSliderUI");
+			final Field paintValue = sliderUIClass.getDeclaredField("paintValue");
+			paintValue.setAccessible(true);
+
+			slider = new JSlider(JSlider.HORIZONTAL){
+
+				/* Enable to customize the label displayed above the slider cursor
+				 * see: https://stackoverflow.com/questions/33401024/display-modified-jslider-value-above-thumb */
+				private SliderPopupListener popupHandler;
+				@Override public void updateUI() {
+					removeMouseMotionListener(popupHandler);
+					removeMouseListener(popupHandler);
+					removeMouseWheelListener(popupHandler);
+					super.updateUI();
+					popupHandler = new SliderPopupListener();
+					addMouseMotionListener(popupHandler);
+					addMouseListener(popupHandler);
+					addMouseWheelListener(popupHandler);
+				}
+			};
+
+			paintValue.set(slider.getUI(), false);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 
 		slider.addChangeListener(new ChangeListener(){
 			public void stateChanged(ChangeEvent e){
@@ -172,6 +211,16 @@ public class VisualisationPanel extends JPanel{
 
 						clusterTree.setClusterSet(hcs.getClusterSet(slider.getValue()));
 						tb_cluster.setTitle("Clusters (" + getSelectedClusterSet().size() + ")");
+						
+						if(MainTutorial.IS_TUTO && MainTutorial.getCurrentStep() instanceof ChangeDisplayedClusterSet){
+							
+							ChangeDisplayedClusterSet cdcs = (ChangeDisplayedClusterSet)MainTutorial.getCurrentStep();
+							
+							if(getSelectedClusterSet().size() == cdcs.numberOfClusters)
+								MainTutorial.nextStep();
+						}
+						
+						displayFirstFourPatterns();
 
 						/* Necessary to update the title */
 						jp_cluster.repaint();
@@ -601,17 +650,21 @@ public class VisualisationPanel extends JPanel{
 					Cluster c = (Cluster)cNode.getUserObject();
 					int size = c.size();
 
-					if(MainTutorial.IS_TUTO && MainTutorial.getCurrentStep() instanceof ChangeDisplayedAlignment
-							&& !isAutomaticallyDisplayingClusters){
+					if(MainTutorial.IS_TUTO && !isAutomaticallyDisplayingClusters){
 
-						ChangeDisplayedAlignment cda = (ChangeDisplayedAlignment)MainTutorial.getCurrentStep();
+						if(MainTutorial.getCurrentStep() instanceof ChangeDisplayedAlignment){
+							
+							ChangeDisplayedAlignment cda = (ChangeDisplayedAlignment)MainTutorial.getCurrentStep();
 
-						if(StandardView.getInstance().isCtrlPressed)
-							cda.ctrlClickOnAlignmentPerformed = true;
-						else
-							cda.normalClickOnAlignmentPerformed = true;
+							if(StandardView.getInstance().isCtrlPressed)
+								cda.ctrlClickOnAlignmentPerformed = true;
+							else
+								cda.normalClickOnAlignmentPerformed = true;
 
-						if(cda.isOver())
+							if(cda.isOver())
+								MainTutorial.nextStep();
+						}
+						else if(MainTutorial.getCurrentStep() instanceof ChangeDisplayedCluster)
 							MainTutorial.nextStep();
 
 					}
@@ -720,7 +773,7 @@ public class VisualisationPanel extends JPanel{
 			else
 				displayCBSelection();
 
-			displayFirstTwoClusters();
+			displayFirstFourPatterns();
 		}
 
 		else{
@@ -735,7 +788,7 @@ public class VisualisationPanel extends JPanel{
 
 	boolean isAutomaticallyDisplayingClusters = false;
 
-	public void displayFirstTwoClusters(){
+	public void displayFirstFourPatterns(){
 
 		Object root = clusterTree.getModel().getRoot();
 
@@ -746,25 +799,67 @@ public class VisualisationPanel extends JPanel{
 			int numberOfPatternsInFirstCluster = clusterTree.getModel().getChildCount(firstChild);
 
 			//		System.out.println("Number of clusters: " + numberOfClusters);
+			
 			if(numberOfClusters > 0){
-				boolean previous = StandardView.getInstance().isCtrlPressed;
-				StandardView.getInstance().isCtrlPressed = false;
+				
 				isAutomaticallyDisplayingClusters = true;
-				displayClusterSelection(0, true, null);
 
-				if(numberOfClusters > 1){
-					StandardView.getInstance().isCtrlPressed = true;
-					displayClusterSelection(numberOfPatternsInFirstCluster + 1, false, null);
+				/* Index of the row of the four first patterns */
+				List<Integer> firstPatternsRow = new ArrayList<>();
+				int clusterId = 0;
+				int clusterRow = 0;
+				
+				while(firstPatternsRow.size() < 4 && clusterId < numberOfClusters){
+
+					Object currentCluster = clusterTree.getModel().getChild(root, 0);
+					int numberOfPatterns = clusterTree.getModel().getChildCount(currentCluster);
+					
+					int i = 0;
+					while(firstPatternsRow.size() < 4 && i < numberOfPatterns){
+						
+						firstPatternsRow.add(clusterRow + i + 1);
+						i++;
+						
+					}
+
+					clusterId++;
+					clusterRow = clusterRow + numberOfPatterns + 1;
+					
 				}
+				
+				if(firstPatternsRow.size() > 0){
+					
+					displayClusterSelection(firstPatternsRow.get(0), true, null);
+					
+					if(firstPatternsRow.size() > 1){
 
-				StandardView.getInstance().isCtrlPressed = previous;
+						displayClusterSelection(firstPatternsRow.get(1), false, null);
+						
+						if(firstPatternsRow.size() > 2){
+
+							boolean previous = StandardView.getInstance().isCtrlPressed;
+							StandardView.getInstance().isCtrlPressed = true;
+
+							displayClusterSelection(firstPatternsRow.get(2), true, null);
+							
+							if(firstPatternsRow.size() > 3)
+								displayClusterSelection(firstPatternsRow.get(3), false, null);
+							
+
+							StandardView.getInstance().isCtrlPressed = previous;
+							
+						}
+					}
+					
+				}
+				
 				isAutomaticallyDisplayingClusters = false;
 			}
 		}
 	}
 
 	public void displayCBSelection(){
-
+		
 		clusterTree.removeSelection();
 		displayCBSelection(slider.getValue());
 	}
@@ -775,6 +870,9 @@ public class VisualisationPanel extends JPanel{
 	public void displayCBSelection(int sliderPosition){
 
 		Object selectedElement = cscb.getSelectedItem();
+
+		if(MainTutorial.IS_TUTO && MainTutorial.getCurrentStep() instanceof ChangeDisplayedClusteringMethod)
+			MainTutorial.nextStep();
 
 		if(selectedElement instanceof HardClusteringSolution){
 
@@ -907,7 +1005,7 @@ public class VisualisationPanel extends JPanel{
 
 		while(currentLabel <= size - 1){
 
-			/* Get the displayed value of the label (ie: the cluster n��<currentLabel> size) */
+			/* Get the displayed value of the label (ie: the cluster n°<currentLabel> size) */
 			Integer clusterSize = cs.getClusterSet((int)currentLabel).size();
 			sliderLabelTable.put(currentLabel, new JLabel(clusterSize.toString()));
 
@@ -1010,5 +1108,49 @@ public class VisualisationPanel extends JPanel{
 		if(cscb.getItemCount() > i)
 			cscb.remove(i);
 	}
+
+	class SliderPopupListener extends MouseAdapter {
+		private final JWindow toolTip = new JWindow();
+		private final JLabel label = new JLabel("", SwingConstants.CENTER);
+		private final Dimension size = new Dimension(60, 20);
+		private int prevValue = -1;
+
+		public SliderPopupListener() {
+			super();
+			label.setOpaque(false);
+			label.setBackground(UIManager.getColor("ToolTip.background"));
+			//label.setBorder(UIManager.getBorder("ToolTip.border"));
+			label.setBorder(BorderFactory.createLineBorder(Color.CYAN.darker()));
+			toolTip.add(label);
+			toolTip.setSize(size);
+		}
+		protected void updateToolTip(MouseEvent me) {
+			JSlider slider = (JSlider) me.getComponent();
+			int intValue = (int) slider.getValue();
+			if (prevValue != intValue) {
+
+				if(cscb.getSelectedItem() instanceof HierarchicalClusteringSolution){
+
+					HierarchicalClusteringSolution hcs = (HierarchicalClusteringSolution)cscb.getSelectedItem();
+
+					label.setText(((Integer)(hcs.getClusterSet(slider.getValue()).size())).toString());
+					Point pt = me.getPoint();
+					pt.y = -size.height;
+					SwingUtilities.convertPointToScreen(pt, me.getComponent());
+					pt.translate(-size.width / 2, 0);
+					toolTip.setLocation(pt);
+				}
+			}
+			prevValue = intValue;
+		}
+		@Override public void mouseDragged(MouseEvent me) {
+			toolTip.setVisible(true);
+			updateToolTip(me);
+		}
+		@Override public void mouseReleased(MouseEvent me) {
+			toolTip.setVisible(false);
+		}
+	}
+
 
 }

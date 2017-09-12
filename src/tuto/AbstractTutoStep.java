@@ -27,6 +27,14 @@ public abstract class AbstractTutoStep {
 	/** Returns a string which describes the result of the step and that will be displayed after the step is performed */
 	public abstract String resultsComment();
 	
+	/** Returns the name of the step if it can directly be jumped to; returns null otherwise
+	 * For example it is not possible to jump directly to an EditSimilarity step as it first requires the OpenEditSimilarity step.
+	 */
+	public abstract String gotoName();
+	
+	/** Contains the actions that must be performed if the step is skipped because the user jumped to a subsequent step */
+	public abstract void actionsIfSkipped();
+	
 	
 	public SelectionPanel getSelectionPanel(){
 		return StandardView.getInstance().jf_s;
