@@ -232,7 +232,7 @@ public class ClassRepresentativePatternExtractor implements Serializable{
 	public void initializeParameters(){
 
 		double sabre_desynch = 100000 * MAXIMAL_DISTANCE * nbOfAnnotationColumns / 2.0;
-		SABRE.getInstance().setParam(new SABREParameter(2*sabre_desynch, sabre_desynch));
+		SABRE.getInstance().setParam(new SABREParameter(2*sabre_desynch, sabre_desynch, 0));
 		NumericalColumn.maxSim = MAXIMAL_DISTANCE;
 
 	}

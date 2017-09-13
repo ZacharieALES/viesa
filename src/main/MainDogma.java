@@ -31,7 +31,7 @@ public class MainDogma {
 
 		double gap = 2*desynch;
 
-		SABRE.getInstance().setParam(new SABREParameter(gap, desynch)); 
+		SABRE.getInstance().setParam(new SABREParameter(gap, desynch, desired_number_of_alignments)); 
 		Corpus.getCorpus().setAnnotationSimilarities(st);
 
 		ArrayList<Integer> al_comment = new ArrayList<Integer>();
@@ -43,7 +43,6 @@ public class MainDogma {
 		al_annot.add(1);
 
 		try {
-			Corpus.getCorpus().setDesiredNumberOfAlignments(desired_number_of_alignments);
 			Corpus.getCorpus().setColumnFormat(al_comment, al_annot, null);
 			Corpus.getCorpus().setAnnotationSimilarities(st);
 			Corpus.getCorpus().setMaxDistance(1.0);

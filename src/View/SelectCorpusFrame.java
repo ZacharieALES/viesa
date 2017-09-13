@@ -105,8 +105,7 @@ public class SelectCorpusFrame extends JFrame{
 					int desiredNumberOfAlignments = 10;
 					double gap = 10;
 
-					SABRE.getInstance().setParam(new SABREParameter(gap, gap/2)); 
-					Corpus.getCorpus().setDesiredNumberOfAlignments(desiredNumberOfAlignments);
+					SABRE.getInstance().setParam(new SABREParameter(gap, gap/2, desiredNumberOfAlignments)); 
 
 					StandardView sv = StandardView.getInstance();
 					Corpus.getCorpus().addObserver(sv);

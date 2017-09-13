@@ -69,8 +69,7 @@ public class MainCogniSismef {
 			int latestDesiredNumberOfAlignments = 25;
 			double latestGap = 10;
 
-			SABRE.getInstance().setParam(new SABREParameter(latestGap, latestGap/2)); 
-			Corpus.getCorpus().setDesiredNumberOfAlignments(latestDesiredNumberOfAlignments);
+			SABRE.getInstance().setParam(new SABREParameter(latestGap, latestGap/2, latestDesiredNumberOfAlignments));
 			
 			StandardView sv = StandardView.getInstance();
 			Corpus.getCorpus().addObserver(sv);

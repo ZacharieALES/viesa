@@ -79,8 +79,7 @@ public class MainTutorial {
 			Corpus.getCorpus().setAnnotationSimilarities(st);
 			Corpus.getCorpus().add(fo_path, Main.hasHeader);
 
-			SABRE.getInstance().setParam(new SABREParameter(gap, gap/2)); 
-			Corpus.getCorpus().setDesiredNumberOfAlignments(desiredNumberOfClusters);
+			SABRE.getInstance().setParam(new SABREParameter(gap, gap/2, desiredNumberOfClusters)); 
 			sv.jf_s.jtf_K.setText("3");
 
 			Corpus.getCorpus().setMaxDistance(5.0);

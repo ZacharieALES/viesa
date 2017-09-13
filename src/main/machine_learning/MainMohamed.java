@@ -93,7 +93,7 @@ public class MainMohamed {
 		SABRE.getInstance().addObserver(sv);
 
 
-		SABRE.getInstance().setParam(new SABREParameter(gap, desynch)); 
+		SABRE.getInstance().setParam(new SABREParameter(gap, desynch, 0)); 
 			
 		try {
 
@@ -198,7 +198,7 @@ public class MainMohamed {
 		ArrayList<ArrayList<ClassifiedAA>> arrays = new ArrayList<ArrayList<ClassifiedAA>>();
 
 
-		SABRE.getInstance().setParam(new SABREParameter(gap, desynch)); 
+		SABRE.getInstance().setParam(new SABREParameter(gap, desynch, 0)); 
 		try {
 			
 			

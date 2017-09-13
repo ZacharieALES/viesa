@@ -11,12 +11,9 @@ public class ExtractionAlignmentsTest {
 	@Test
 	public void orderOfAlignments(){
 		
-		SABRE.getInstance().setParam(new SABREParameter(0, 0));
+		SABRE.getInstance().setParam(new SABREParameter(0, 0, 100));
 		
 		ExtractionAlignments ea = new ExtractionAlignments();
-		
-		/* Set the desired number of alignments to 100 */
-		SABRE.getInstance().getParam().desired_number_of_alignments = 100;
 
 		ea.addAlignment(new Alignment(null, null, 1));
 		ea.addAlignment(new Alignment(null, null, 4));
@@ -67,9 +64,8 @@ public class ExtractionAlignmentsTest {
 	public void exceedMaxNumberOfAlignments(){
 		
 		/* Part 1 add alignment */
-		SABRE.getInstance().setParam(new SABREParameter(0, 0));
+		SABRE.getInstance().setParam(new SABREParameter(0, 0, 4));
 		ExtractionAlignments ea = new ExtractionAlignments();
-		SABRE.getInstance().getParam().desired_number_of_alignments = 4;
 
 		ea.addAlignment(new Alignment(null, null, 40));
 		ea.addAlignment(new Alignment(null, null, 30));

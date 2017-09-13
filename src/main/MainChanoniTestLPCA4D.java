@@ -35,7 +35,7 @@ public class MainChanoniTestLPCA4D {
 
 		double gap = 2*desynch;
 
-		SABRE.getInstance().setParam(new SABREParameter(gap, desynch)); 
+		SABRE.getInstance().setParam(new SABREParameter(gap, desynch, desired_number_of_alignments)); 
 
 		ArrayList<Integer> al_comment = new ArrayList<Integer>();
 		ArrayList<Integer> al_annot = new ArrayList<Integer>();
@@ -50,7 +50,6 @@ public class MainChanoniTestLPCA4D {
 		al_annot.add(6);
 
 		try {
-			Corpus.getCorpus().setDesiredNumberOfAlignments(desired_number_of_alignments);
 			Corpus.getCorpus().setColumnFormat(al_comment, al_annot, null);
 			Corpus.getCorpus().setAnnotationSimilarities(st);
 			Corpus.getCorpus().setMaxDistance(1.0);

@@ -76,21 +76,22 @@ public class EditColumnSelection extends AbstractTutoStep {
 			/* PositionedColumn to add; null if the new type is NONE */
 			PositionedColumn pc = null;
 			
-			if(this.modifiedColType.equals(ColumnType.NONE)){
-
-				switch(this.modifiedColType){
-				case ANNOTATION:
-					pc = new PositionedColumn(new AnnotationColumn(), this.modifiedColId);break;
-				case NUMERICAL_ANNOTATION:
-					pc = new PositionedColumn(new NumericalColumn(), this.modifiedColId);break;
-				case COMMENT:
-					pc = new PositionedColumn(new CommentColumn(), this.modifiedColId);break;	
-				}
+			switch(this.modifiedColType){
+			case ANNOTATION:
+				pc = new PositionedColumn(new AnnotationColumn(), this.modifiedColId);break;
+			case NUMERICAL_ANNOTATION:
+				pc = new PositionedColumn(new NumericalColumn(), this.modifiedColId);break;
+			case COMMENT:
+				pc = new PositionedColumn(new CommentColumn(), this.modifiedColId);break;	
 			}
-			
+
 			/* If the modified column was not originally in the column format */
-			if(originalColType.equals(ColumnType.NONE))
-				alPc.add(pc);
+			if(originalColType.equals(ColumnType.NONE)) {
+				
+				/* If the modified columns is not NONE itself, add it */
+				if(pc != null)
+					alPc.add(pc);
+			}
 			
 			/* If the modified column was originally in the column format */
 			else{
@@ -118,6 +119,7 @@ public class EditColumnSelection extends AbstractTutoStep {
 				}
 				
 			}			
+					
 
 			Corpus.getCorpus().setAACF(new AAColumnFormat(alPc), true);
 			

@@ -172,7 +172,7 @@ public class SingleLink extends AbstractClusteringMethod{
 		singleLinkSolution.setMethodName("Single-Link");
 
 		
-		System.out.println("Single-Link: end");
+//		System.out.println("Single-Link: end");
 		
 		return singleLinkSolution;
 	}

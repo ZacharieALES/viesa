@@ -90,7 +90,7 @@ public class EditGap extends AbstractTutoStep {
 
 	@Override
 	public void actionsIfSkipped() {
-		SABRE.getInstance().setParam(new SABREParameter(this.newParameterValue, this.newParameterValue/2)); 
+		SABRE.getInstance().setParam(new SABREParameter(this.newParameterValue, this.newParameterValue/2, SABRE.getInstance().getParam().desired_number_of_alignments)); 
 	}
 
 }

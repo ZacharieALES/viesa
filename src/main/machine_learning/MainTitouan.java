@@ -42,7 +42,7 @@ public class MainTitouan {
 //		String fo_path_temp = "data/Dialogues_parents_enfants/";						
 //		st = new PositiveScoreTable(fo_path_temp + "couples_scores_positifs.csv");
 
-		SABRE.getInstance().setParam(new SABREParameter(gap, desynch)); 
+		SABRE.getInstance().setParam(new SABREParameter(gap, desynch, desired_number_of_alignments)); 
 
 		ArrayList<Integer> al_comment = new ArrayList<Integer>();
 		ArrayList<Integer> al_numerical = new ArrayList<Integer>();
@@ -54,7 +54,6 @@ public class MainTitouan {
 		al_numerical.add(4);
 
 		try {
-			Corpus.getCorpus().setDesiredNumberOfAlignments(desired_number_of_alignments);
 			Corpus.getCorpus().setColumnFormat(al_comment, null, al_numerical);
 			Corpus.getCorpus().setMaxDistance(maxDistance);
 			Corpus.getCorpus().add(fo_path, false);

@@ -4,7 +4,10 @@ public class FinalizationStep extends AbstractTutoStep {
 
 
 	@Override
-	public void stepFinalization() {
+	public void stepFinalization() {}
+
+	@Override
+	public void stepInitialization() {
 		
 		/* Disable all the components that can be used by the user */
 		getSelectionPanel().jb_process_extraction.setEnabled(true);
@@ -20,11 +23,15 @@ public class FinalizationStep extends AbstractTutoStep {
 		getSelectionPanel().jtf_sim_scores.setEnabled(true);
 		getSelectionPanel().jtf_K.setEnabled(true);
 		getSelectionPanel().jtf_maxSim.setEnabled(true);
+
+		getVisualisationPanel().cscb.setEnabled(true);
+		getVisualisationPanel().cscb.setEnabled(true);
+		
+		if(getVisualisationPanel().slider != null)
+			getVisualisationPanel().slider.setEnabled(true);
+
 		
 	}
-
-	@Override
-	public void stepInitialization() {}
 
 	@Override
 	public String description() {

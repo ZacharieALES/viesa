@@ -33,7 +33,6 @@ public abstract class AbstractClusteringMethod extends SwingWorker<Void, Void>{
 //		System.out.println("ACM: remaining: " + remainingClusteringMethodToProcess);
 		if(remainingClusteringMethodToProcess == 0){
 			Corpus.getCorpus().notifyObserverEndOfClusteringProcess();
-			System.out.println("Corpus: notify end of clustering process");
 		}
 		
 		done = true;

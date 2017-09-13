@@ -37,7 +37,7 @@ public class MainDemo {
 		StandardView sv = StandardView.getInstance();
 		Corpus.getCorpus().addObserver(sv);
 		SABRE.getInstance().addObserver(sv);
-		SABRE.getInstance().setParam(new SABREParameter(gap, desynch)); 
+		SABRE.getInstance().setParam(new SABREParameter(gap, desynch, desired_number_of_alignments)); 
 
 			
 		try {
@@ -49,7 +49,6 @@ public class MainDemo {
 			
 			al_numeric.add(3);
 			
-			Corpus.getCorpus().setDesiredNumberOfAlignments(desired_number_of_alignments);
 			Corpus.getCorpus().setColumnFormat(al_comment, al_annot, al_numeric);
 			Corpus.getCorpus().setMaxDistance(1.0);
 			
