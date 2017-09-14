@@ -53,6 +53,8 @@ public class MainChanoniTestLPCA4D {
 			Corpus.getCorpus().setColumnFormat(al_comment, al_annot, null);
 			Corpus.getCorpus().setAnnotationSimilarities(st);
 			Corpus.getCorpus().setMaxDistance(1.0);
+			Corpus.getCorpus().removeAllAA();
+
 			Corpus.getCorpus().add(fo_path + "/csv", false);
 		} catch (InvalidArgumentsToCreateAnAAColumnFormat e) {
 			e.printStackTrace();

@@ -799,9 +799,7 @@ public class MainVito {
 	
 	public void runInViesa(){
 
-		StandardView sv = StandardView.getInstance();
-		Corpus.getCorpus().addObserver(sv);
-		SABRE.getInstance().addObserver(sv);
+		new StandardView();
 		SABRE.getInstance().setParam(new SABREParameter(gap, desynch, desired_number_of_alignments)); 
 		
 		Corpus.getCorpus().computeClosePatterns = true;
@@ -817,6 +815,7 @@ public class MainVito {
 			Corpus.getCorpus().setColumnFormat(al_comment, al_annot, null);
 
 			AnnotationColumn.pst = new PositiveScoreTable(this.fo_path + "/vito_couples_scores_positifs.csv");
+			Corpus.getCorpus().removeAllAA();
 			
 			Corpus.getCorpus().add(csv_path , false);
 			

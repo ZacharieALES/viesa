@@ -124,9 +124,9 @@ public class Corpus implements Observable, Serializable {
 			/* If the aa is compatible with the column format of the corpus */
 			if (!aa.isCompatibleWith(aacf))
 				System.err.println("The column number (" + aa.getNumberOfAnnotationColumns()
-						+ ") of the AnnotatedArray " + aa.getFileName()
-						+ " is not compatible with the first of the corpus (which is : " + arrays.get(0).getFileName()
-						+ "(" + arrays.get(0).getNumberOfAnnotationColumns() + "))");
+				+ ") of the AnnotatedArray " + aa.getFileName()
+				+ " is not compatible with the first of the corpus (which is : " + arrays.get(0).getFileName()
+				+ "(" + arrays.get(0).getNumberOfAnnotationColumns() + "))");
 			else {
 				arrays.add(aa);
 				notifyObserverAddAA(aa);
@@ -274,6 +274,19 @@ public class Corpus implements Observable, Serializable {
 
 	}
 
+
+	public void removeAllAA() {
+
+		if(arrays != null){
+			int size = arrays.size();
+			arrays.clear();
+
+			for(int i = size - 1 ; i >= 0; i--)
+				notifyObserverRemoveAA(i);
+		}
+
+	}
+
 	public void remove(int id) {
 		arrays.remove(id);
 
@@ -320,7 +333,7 @@ public class Corpus implements Observable, Serializable {
 
 		/* Extract the alignments between aa1 and aa2 */
 		extractedAlignments
-				.addAlignments(SABRE.getInstance().align(aa1, aa2, extractedAlignments.getMinimumScore(), false));
+		.addAlignments(SABRE.getInstance().align(aa1, aa2, extractedAlignments.getMinimumScore(), false));
 	}
 
 	public ClusteringSolution getClusteringSolution(int i) {
@@ -394,6 +407,16 @@ public class Corpus implements Observable, Serializable {
 	public void removeAllObserver() {
 		if (listObserver != null)
 			listObserver.clear();
+	}
+
+
+	public void removeObserver(CorpusObserver obs) {
+
+		int id = listObserver.indexOf(obs);
+
+		if(id != -1)
+			listObserver.remove(obs);
+
 	}
 
 	public void removeObserver() {
@@ -690,7 +713,7 @@ public class Corpus implements Observable, Serializable {
 					}
 				}
 
-//				System.out.println("Corpus : " + Corpus.getCorpus().getPatternSize() + " extracted patterns");
+				//				System.out.println("Corpus : " + Corpus.getCorpus().getPatternSize() + " extracted patterns");
 
 				if (isCancelled()) {
 					this.done();
@@ -821,67 +844,67 @@ public class Corpus implements Observable, Serializable {
 				/* If the second pattern is not included in another one */
 				if (includedIn[id2] == -1) {
 
-				Cluster c = new Cluster();
-				c.add(p1);
-				c.add(p2);
-				clusters.add(c);
+					Cluster c = new Cluster();
+					c.add(p1);
+					c.add(p2);
+					clusters.add(c);
 
 				}
 
-				/* If the second pattern is included in another one */
+			/* If the second pattern is included in another one */
 				else {
 
-				/*
-				 * Create a cluster with the first pattern and the parent of the
-				 * second pattern
-				 */
-				Cluster c = new Cluster();
-				c.add(p1);
+					/*
+					 * Create a cluster with the first pattern and the parent of the
+					 * second pattern
+					 */
+					Cluster c = new Cluster();
+					c.add(p1);
 
-				int parentId = getParentPattern(includedIn, id2);
+					int parentId = getParentPattern(includedIn, id2);
 
-				c.add(patterns.get(parentId));
-				clusters.add(c);
+					c.add(patterns.get(parentId));
+					clusters.add(c);
 				}
 
 			/* If the first pattern is included in another one */
 			else
 
-			/*
-			 * If the second pattern is not included in another one
-			 */
-			if (includedIn[id2] == -1) {
-
 				/*
-				 * Create a cluster with the second pattern and the parent of
-				 * the first pattern
+				 * If the second pattern is not included in another one
 				 */
-				Cluster c = new Cluster();
-				c.add(p2);
+				if (includedIn[id2] == -1) {
 
-				int parentId = getParentPattern(includedIn, id1);
+					/*
+					 * Create a cluster with the second pattern and the parent of
+					 * the first pattern
+					 */
+					Cluster c = new Cluster();
+					c.add(p2);
 
-				c.add(patterns.get(parentId));
-				clusters.add(c);
-			}
+					int parentId = getParentPattern(includedIn, id1);
+
+					c.add(patterns.get(parentId));
+					clusters.add(c);
+				}
 
 			/*
 			 * If both patterns from the alignment are included in another
 			 * pattern
 			 */
-			else {
+				else {
 
-				/*
-				 * Create a cluster with the parent of both patterns
-				 */
-				Cluster c = new Cluster();
-				int parentId = getParentPattern(includedIn, id2);
-				c.add(patterns.get(parentId));
+					/*
+					 * Create a cluster with the parent of both patterns
+					 */
+					Cluster c = new Cluster();
+					int parentId = getParentPattern(includedIn, id2);
+					c.add(patterns.get(parentId));
 
-				parentId = getParentPattern(includedIn, id1);
-				c.add(patterns.get(parentId));
-				clusters.add(c);
-			}
+					parentId = getParentPattern(includedIn, id1);
+					c.add(patterns.get(parentId));
+					clusters.add(c);
+				}
 
 			// TODO Conserver cet alignement tout de même ?
 
@@ -946,7 +969,7 @@ public class Corpus implements Observable, Serializable {
 
 		return (aacf != null && ((aacf.containColumnsOfType(ColumnType.ANNOTATION) && AnnotationColumn.pst != null)
 				|| (aacf.containColumnsOfType(ColumnType.NUMERICAL_ANNOTATION) && NumericalColumn.maxSim != null
-						&& NumericalColumn.maxSim != -Double.MAX_VALUE)))
+				&& NumericalColumn.maxSim != -Double.MAX_VALUE)))
 				&& arrays != null && SABRE.getInstance().getParam() != null
 				&& SABRE.getInstance().getParam().desired_number_of_alignments > 0;
 	}

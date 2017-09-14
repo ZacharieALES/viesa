@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
+import main.MainTutorial;
 import net.miginfocom.swing.MigLayout;
 
 @SuppressWarnings("serial")
@@ -62,6 +63,9 @@ public class JDialogProgressBar extends JDialog implements PropertyChangeListene
 		
 		jp.add(jpb, "growx,wrap");
 		jp.add(jb_cancel);
+		
+		if(MainTutorial.IS_TUTO)
+			jb_cancel.setEnabled(false);
 		
 		this.setContentPane(jp);
 	}

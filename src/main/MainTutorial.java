@@ -42,8 +42,8 @@ public class MainTutorial {
 	public static boolean IS_TUTO = false;	
 	public static List<AbstractTutoStep> lSteps = new ArrayList<>();
 	public static int currentStepId = -1;
-	public static int desiredNumberOfClusters = 3;
-	public static int gap = 100;
+	public static final int desiredNumberOfClusters = 3;
+	public static final int gap = 100;
 
 	public static void run(int startingStep){
 
@@ -59,8 +59,6 @@ public class MainTutorial {
 
 		Corpus.getCorpus().setAnnotationSimilarities(st);
 
-
-
 		ArrayList<Integer> al_comment = new ArrayList<Integer>();
 		ArrayList<Integer> al_annot = new ArrayList<Integer>();
 
@@ -71,12 +69,12 @@ public class MainTutorial {
 
 		try {
 
-			StandardView sv = StandardView.getInstance();
-			Corpus.getCorpus().addObserver(sv);
-			SABRE.getInstance().addObserver(sv);
+			StandardView sv = new StandardView();
+//			StandardView sv = StandardView.getInstance();
 
 			Corpus.getCorpus().setColumnFormat(al_comment, al_annot, null);
 			Corpus.getCorpus().setAnnotationSimilarities(st);
+			Corpus.getCorpus().removeAllAA();
 			Corpus.getCorpus().add(fo_path, Main.hasHeader);
 
 			SABRE.getInstance().setParam(new SABREParameter(gap, gap/2, desiredNumberOfClusters)); 
@@ -88,7 +86,8 @@ public class MainTutorial {
 			
 			for(int i = 1 ; i < startingStep ; i++){
 				MainTutorial.getCurrentStep().actionsIfSkipped();
-				MainTutorial.nextStep();
+				MainTutorial.getCurrentStep().stepFinalization();
+				MainTutorial.nextStep(false);
 			}
 
 			if(startingStep == 0)
@@ -111,12 +110,24 @@ public class MainTutorial {
 
 	public static AbstractTutoStep getCurrentStep(){ return isOver() ? null : lSteps.get(currentStepId);}
 
+	
+	/**
+	 * Go to the next tutorial step (by default, display the previous step result
+	 */
 	public static void nextStep(){
+		nextStep(true);
+	}
+	
+	/**
+	 * Display the next tutorial step
+	 * @param displayPreviousStepResult True if the result of the previous step must be displayed; false otherwise (e.g., when we jump to a given step, it is not desirable to display the previous result)
+	 */
+	public static void nextStep(boolean displayPreviousStepResult){
 
 		/* String that will contain the result of the previous step (if any) */
 		String resultString = null;
 
-		if(!isOver() && currentStepId >= 0){
+		if(!isOver() && currentStepId >= 0 && displayPreviousStepResult){
 			getCurrentStep().stepFinalization();
 			resultString = getCurrentStep().resultsComment();
 		}
@@ -127,10 +138,19 @@ public class MainTutorial {
 
 		if(newStep != null){
 			newStep.updateStepNumber();
-			newStep.displayText(resultString);
+			newStep.displayText(resultString);	
 			newStep.stepInitialization();
+			
+//			StandardView.getInstance().remove(StandardView.getInstance().jspTuto);
+//			StandardView.getInstance().addJSPTuto();
+			
+//			StandardView.getInstance().jspTuto.getVerticalScrollBar().setValue(0);
+			
+//			StandardView.getInstance().jspTuto.repaint();
+//			StandardView.getInstance().repaint();
+//			StandardView.getInstance().validate();
+//			StandardView.getInstance().jspTuto.validate();
 		}
-
 	}
 
 	/**
@@ -140,6 +160,9 @@ public class MainTutorial {
 	public static List<StepWrapper> initialize() {
 		MainTutorial.IS_TUTO = true;
 		Main.hasHeader = false;
+		currentStepId = -1;
+		
+		lSteps = new ArrayList<>();
 
 		/* Set the tutorial steps */
 		lSteps.add(new InitializationStep());
@@ -218,7 +241,12 @@ public class MainTutorial {
 
 		lSteps.add(new OpenColumnsSelectionFrame(){
 			@Override
-			public String description(){return "We will now explain the role of column type \"Numerical\".";}
+			public String description(){return "Three buttons are dedicated to the management of the arrays contained in the corpus:<br>"
+					+ "- <img src=\"file:./src/img/plus.png\"/>: enables to add arrays into the corpus;<br>"
+					+ "- <img src=\"file:./src/img/minus.png\"/>: enables to remove the array currently selected in the list from the corpus;<br>"
+					+ "- <img src=\"file:./src/img/trash.png\"/>: remove all the arrays from the corpus.<br>"
+					+ "These buttons are not used in the context of the tutorial but they will be useful on other corpuses.<br><br>"
+					+ "We will now explain the role of the column type called \"Numerical\".";}
 		});
 
 		EditColumnSelection ecs = new EditColumnSelection(){

@@ -34,7 +34,7 @@ public class EditColumnSelection extends AbstractTutoStep {
 		return 	"This window is used to modify the columns <i>type</i> of the input csv files.<br>"
 				+ "The possible types of a column are:<br>"
 				+ "- unused: the column is not displayed and not used to extract the patterns;<br>"
-				+ "- comment: the column is not used to extract the patterns;"
+				+ "- comment: the column is displayed but it is not used to extract the patterns;<br>"
 				+ "- annotation: the column is used to extract the patterns (i.e., some annotations of this column can appear in an alignment);<br>"
 				+ "- numerical: this type will be explained in a subsequent step.<br><br>"
 				+ "To change the type of a column, click on it.";

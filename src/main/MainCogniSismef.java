@@ -63,6 +63,8 @@ public class MainCogniSismef {
 
 			Corpus.getCorpus().setColumnFormat(al_comment, al_annot, null);
 			Corpus.getCorpus().setAnnotationSimilarities(st);
+			Corpus.getCorpus().removeAllAA();
+
 			Corpus.getCorpus().add(fo_path, Main.hasHeader);
 
 
@@ -71,9 +73,7 @@ public class MainCogniSismef {
 
 			SABRE.getInstance().setParam(new SABREParameter(latestGap, latestGap/2, latestDesiredNumberOfAlignments));
 			
-			StandardView sv = StandardView.getInstance();
-			Corpus.getCorpus().addObserver(sv);
-			SABRE.getInstance().addObserver(sv);
+			new StandardView();
 
 		} catch (UndefinedColumnFormatException e) {e.printStackTrace();} catch (InvalidArgumentsToCreateAnAAColumnFormat e) {
 			// TODO Auto-generated catch block

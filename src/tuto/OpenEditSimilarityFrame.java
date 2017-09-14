@@ -27,9 +27,7 @@ public class OpenEditSimilarityFrame extends AbstractTutoStep {
 	public String description() {
 		return "The next parameter that we will modify is the inter-annotation similarity.<br>"
 				+ "To compute the score of an alignment, VIESA has to know the similarity between each couple of annotations (ex: sim(A,A) = 10, sim(A,B) = 5, ...).<br><br>"
-				+ "Remarks:<br>"
-				+ "- If the similarity between two annotations is not specified by the user it will considered to be 0 (so these annotations will never be aligned together in an alignment).<br>"
-				+ "- Annotations in different columns cannot be aligned together so specifying their similarity will not affect the results<br>"
+				+ "Remark: Annotations in different columns cannot be aligned together so specifying their similarity will not affect the results<br>"
 				+ "(e.g., if annotation 'A' only appear in the first column and annotation 'C' only appear in the second column, modifying the value of sim(A,C) will not alter the obtained alignments).";
 	}
 	

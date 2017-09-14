@@ -84,8 +84,6 @@ public class SelectionPanel extends JPanel{
 
 	private StandardView sv;
 
-	//TODO quand on change le type de colonnes,  vérifier les fichiers qui seront perdus et l'indiquer à l'utilisateur
-
 	/** List of string which contain the values of the csv file of the last annotated array which has been added for the current column format 
 	 * (null as long as no column format is defined) */
 	private List<String[]> lastEntries = null;
@@ -352,7 +350,7 @@ public class SelectionPanel extends JPanel{
 						MainTutorial.nextStep();
 
 					PSTEditor psted = new PSTEditor(sv);
-					
+
 					PositiveScoreTable pst = psted.showThis();
 
 					if(pst != null){
@@ -432,7 +430,7 @@ public class SelectionPanel extends JPanel{
 
 			}
 		});
-		
+
 		jtf_maxSim.addFocusListener(new FocusListener(){
 
 			@Override
@@ -445,7 +443,7 @@ public class SelectionPanel extends JPanel{
 				if(MainTutorial.IS_TUTO && MainTutorial.getCurrentStep() != null && MainTutorial.getCurrentStep() instanceof EditMaximalSimilarity){
 
 					EditMaximalSimilarity ems = ((EditMaximalSimilarity)MainTutorial.getCurrentStep());
-					
+
 					if(Double.parseDouble(jtf_maxSim.getText()) == ems.newParameterValue)
 						ems.hasValueBeenChanged = true;
 					else
@@ -463,7 +461,7 @@ public class SelectionPanel extends JPanel{
 				if(MainTutorial.IS_TUTO && MainTutorial.getCurrentStep() != null && MainTutorial.getCurrentStep() instanceof EditMaximalSimilarity){
 
 					EditMaximalSimilarity ems = ((EditMaximalSimilarity)MainTutorial.getCurrentStep());
-					
+
 					if(Double.parseDouble(jtf_maxSim.getText()) == ems.newParameterValue)
 						ems.hasValueBeenChanged = true;
 					else
@@ -603,7 +601,7 @@ public class SelectionPanel extends JPanel{
 		jb_process_extraction_and_clustering.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){		
 				sv.process_extraction_and_clustering();
-				
+
 				if(MainTutorial.IS_TUTO && MainTutorial.getCurrentStep() instanceof FirstClustering)
 					MainTutorial.nextStep();
 			}
@@ -619,7 +617,7 @@ public class SelectionPanel extends JPanel{
 						if(MainTutorial.getCurrentStep() instanceof EditDesiredNumberOfAlignmentsStep 
 								&& !((EditDesiredNumberOfAlignmentsStep)MainTutorial.getCurrentStep()).hasValueBeenChanged
 								){
-							JOptionPane.showMessageDialog(SelectionPanel.this, "Please set the desire number of alignments to " + ((EditDesiredNumberOfAlignmentsStep)MainTutorial.getCurrentStep()) + " before starting a new extraction");
+							JOptionPane.showMessageDialog(SelectionPanel.this, "Please set the desire number of alignments to " + ((EditDesiredNumberOfAlignmentsStep)MainTutorial.getCurrentStep()).newParameterValue + " before starting a new extraction");
 						}
 						else if(MainTutorial.getCurrentStep() instanceof EditGap 
 								&& !((EditGap)MainTutorial.getCurrentStep()).hasValueBeenChanged
@@ -716,8 +714,11 @@ public class SelectionPanel extends JPanel{
 			jb_sim_editor.setEnabled(false);
 		}
 
-		jb_process_extraction_and_clustering.setEnabled(isReadyToProcess());
-		jb_process_extraction.setEnabled(isReadyToProcess());
+		if(!MainTutorial.IS_TUTO){
+
+			jb_process_extraction_and_clustering.setEnabled(isReadyToProcess());
+			jb_process_extraction.setEnabled(isReadyToProcess());
+		}
 
 	}
 

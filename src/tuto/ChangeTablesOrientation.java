@@ -16,7 +16,7 @@ public class ChangeTablesOrientation extends AbstractTutoStep {
 
 	@Override
 	public String description() {
-		return "You can change the tables orientation (horizontal or vertical) by clicking on the icon <img src=\"file:./src/img/vertical2.png\"> or <img src=\"file:./src/img/horizontal2.png\">.<br>";
+		return "You can also change the tables orientation (horizontal or vertical) by clicking on the icon <img src=\"file:./src/img/vertical2.png\"> or <img src=\"file:./src/img/horizontal2.png\">.<br>";
 	}
 
 	@Override

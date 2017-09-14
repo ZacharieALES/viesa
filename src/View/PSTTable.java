@@ -53,7 +53,7 @@ public class PSTTable extends JTable{
 	public PSTTable(List<Integer> annotationIndex, PSTEditor pste){
 
 		super();
-		
+
 		this.pste = pste;
 		this.annotationIndex = annotationIndex;
 
@@ -75,15 +75,32 @@ public class PSTTable extends JTable{
 
 		int gap = 11;
 		int width = this.getJSP().getWidth() - (gap * (this.getColumnCount() + 1));
-		int size = Math.max(width/this.getColumnCount(), 4*gap);	
+		int size = Math.max(width/this.getColumnCount(), 4*gap);
 
-		for(int i = 0 ; i < this.getColumnCount() ; i++){
+		int maxSize = -1;
+		int sizeUpperBound = 300;
+
+		for(int i = 1 ; i < this.getColumnCount() ; i++){
 
 			TableColumn column = this.getColumnModel().getColumn(i);
-			column.setMinWidth(size);
+
+			int columnWidth = Math.min(sizeUpperBound, ((Double)(1.2 * StandardView.getInstance().jf_s.jb_addAA.getGraphics().getFontMetrics().stringWidth(Corpus.getCorpus().getAnnotation(annotationIndex.get(i-1))))).intValue());
+
+			//					System.out.println(Corpus.getCorpus().getAnnotation(annotationIndex.get(i-1)) + " : " + columnWidth);
+
+			if(columnWidth > maxSize)
+				maxSize = columnWidth;
+
+			column.setMinWidth(columnWidth);
+
 			column.setCellRenderer(rend);
 
 		}	
+
+
+		TableColumn column = this.getColumnModel().getColumn(0);
+		column.setMinWidth(maxSize);
+		column.setCellRenderer(rend);
 
 		//		this.addFocusListener(new FocusListener() {
 		//			
@@ -247,24 +264,24 @@ public class PSTTable extends JTable{
 						/* and it corresponds to the expected edition */
 						&& ((AbstractEditSimilarityStep)ads).removeEditOperationIfExpected(a1, a2, d)
 						){
-					
+
 					/* Edit the table */
 					rowdata.get(row).set(col, value.toString());
-					
+
 					if(MainTutorial.IS_TUTO)
 						pste.activateOKButton();
-						
-						
+
+
 				}
-				
+
 				/* Otherwise put back the previous value */
 				else{
 					rowdata.get(row).set(col, rowdata.get(row).get(col).toString());
-					
+
 					AbstractEditSimilarityStep est = (AbstractEditSimilarityStep)ads;
 					JOptionPane.showMessageDialog(pste,est.errorMessage());
 				}
-				
+
 
 				fireTableCellUpdated(row, col);
 			}

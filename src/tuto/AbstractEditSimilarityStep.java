@@ -19,7 +19,7 @@ public abstract class AbstractEditSimilarityStep extends AbstractTutoStep {
 
 	@Override
 	public void stepFinalization() {
-		getSelectionPanel().jb_process_extraction.setEnabled(true);
+		getSelectionPanel().jb_process_extraction.setEnabled(false);
 		
 	}
 

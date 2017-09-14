@@ -34,9 +34,7 @@ public class MainDemo {
 	public static void main(String[] args){
 
 		AnnotationColumn.pst = new PositiveScoreTable(fo_path + "/scores_demo.csv");
-		StandardView sv = StandardView.getInstance();
-		Corpus.getCorpus().addObserver(sv);
-		SABRE.getInstance().addObserver(sv);
+		new StandardView();
 		SABRE.getInstance().setParam(new SABREParameter(gap, desynch, desired_number_of_alignments)); 
 
 			
@@ -51,7 +49,7 @@ public class MainDemo {
 			
 			Corpus.getCorpus().setColumnFormat(al_comment, al_annot, al_numeric);
 			Corpus.getCorpus().setMaxDistance(1.0);
-			
+			Corpus.getCorpus().removeAllAA();
 			
 			Corpus.getCorpus().add(csv_path , true);
 			

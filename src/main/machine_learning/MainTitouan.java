@@ -21,9 +21,7 @@ public class MainTitouan {
 
 	public static void runInViesa(int set){
 
-		StandardView sv = StandardView.getInstance();
-		Corpus.getCorpus().addObserver(sv);
-		SABRE.getInstance().addObserver(sv);
+		new StandardView();
 
 //		PositiveScoreTable st;
 
@@ -56,6 +54,8 @@ public class MainTitouan {
 		try {
 			Corpus.getCorpus().setColumnFormat(al_comment, null, al_numerical);
 			Corpus.getCorpus().setMaxDistance(maxDistance);
+			Corpus.getCorpus().removeAllAA();
+
 			Corpus.getCorpus().add(fo_path, false);
 		} catch (InvalidArgumentsToCreateAnAAColumnFormat e) {
 			e.printStackTrace();

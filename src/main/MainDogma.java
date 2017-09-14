@@ -16,9 +16,7 @@ public class MainDogma {
 
 	public static void run(){
 
-		StandardView sv = StandardView.getInstance();
-		Corpus.getCorpus().addObserver(sv);
-		SABRE.getInstance().addObserver(sv);
+		new StandardView();
 
 		PositiveScoreTable st;
 
@@ -46,6 +44,8 @@ public class MainDogma {
 			Corpus.getCorpus().setColumnFormat(al_comment, al_annot, null);
 			Corpus.getCorpus().setAnnotationSimilarities(st);
 			Corpus.getCorpus().setMaxDistance(1.0);
+			Corpus.getCorpus().removeAllAA();
+
 			Corpus.getCorpus().add(fo_path + "/csv", false);
 		} catch (InvalidArgumentsToCreateAnAAColumnFormat e) {
 			e.printStackTrace();

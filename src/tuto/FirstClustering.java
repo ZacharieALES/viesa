@@ -4,6 +4,7 @@ public class FirstClustering extends AbstractTutoStep {
 
 	@Override
 	public void stepInitialization() {
+
 		getSelectionPanel().jb_process_extraction_and_clustering.setEnabled(true);
 	}
 
@@ -21,13 +22,14 @@ public class FirstClustering extends AbstractTutoStep {
 
 	@Override
 	public String instructions() {
-		return "Start the extraction followed by a clustering by pressing the button named \"Extract and cluster\"";
+		return "- Go to the \"Data selection\" tab.<br>"
+		+ "- Start the extraction followed by a clustering by pressing the button named \"Extract and cluster\"";
 	}
 
 	@Override
 	public String resultsComment() {
 		return "As you can see, the \"Cluster\" area of the visualisation tab is slightly modified when the clustering step is performed.<br><br>"
-				+ "First you can observe that the list now contain clusters instead of alignments.<br>"
+				+ "First you can observe that the list now contains clusters instead of alignments.<br>"
 				+ "In practice, the difference between a cluster and alignment is that a cluster may contain more or less than two patterns.";
 	}
 

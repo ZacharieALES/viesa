@@ -88,9 +88,7 @@ public class MainMohamed {
 	
 	public void runInViesa(){
 
-		StandardView sv = StandardView.getInstance();
-		Corpus.getCorpus().addObserver(sv);
-		SABRE.getInstance().addObserver(sv);
+		new StandardView();
 
 
 		SABRE.getInstance().setParam(new SABREParameter(gap, desynch, 0)); 
@@ -100,7 +98,8 @@ public class MainMohamed {
 			Corpus.getCorpus().setDesiredNumberOfAlignments(desired_number_of_alignments);
 			Corpus.getCorpus().setColumnFormat(al_comment, null, al_annot);
 			NumericalColumn.maxSim = maxDist;
-			
+
+			Corpus.getCorpus().removeAllAA();
 
 			for(String s: folders)
 				Corpus.getCorpus().add(fo_path + s, false);

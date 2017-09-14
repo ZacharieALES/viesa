@@ -10,6 +10,7 @@ import java.util.TreeSet;
 import model.Alignment;
 import model.AnnotatedArray;
 import model.AnnotationColumn;
+import model.CorpusObserver;
 import model.NumericalColumn;
 import model.Observable;
 import model.Observer;
@@ -1204,6 +1205,15 @@ public class SABRE implements Observable{
 		}
 
 		listObserver.add((SABREObserver)obs);
+		
+	}
+
+	public void removeObserver(SABREObserver obs) {
+	
+		int id = listObserver.indexOf(obs);
+		
+		if(id != -1)
+			listObserver.remove(obs);
 		
 	}
 

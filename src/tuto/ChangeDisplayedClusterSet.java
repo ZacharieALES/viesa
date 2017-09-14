@@ -24,8 +24,8 @@ public class ChangeDisplayedClusterSet extends AbstractTutoStep {
 			return "You can observe a horizontal slider above the cluster list.<br>"
 					+ "It enables to change the number of clusters in which the patterns are grouped.<br><br>"
 					+ "If you find that the clusters contain:<br>"
-					+ "- too many patterns, you can decrease its value.<br>"
-					+ "- too few patterns, you can increase its value.";
+					+ "- too many patterns, you can increase its value.<br>"
+					+ "- too few patterns, you can decrease its value.";
 	}
 
 	@Override

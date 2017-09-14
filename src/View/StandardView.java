@@ -20,6 +20,9 @@ package View;
 import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
@@ -43,6 +46,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
@@ -75,17 +79,29 @@ public class StandardView extends JFrame implements CorpusObserver,
 	private JDialogProgressBar jdpb;
 	
 	public JLabel jlTuto1; 
+//	public JEditorPane jlTutoStepDescription;
+//	public JEditorPane jlTutoStepInstructions;
 	public JLabel jlTutoStepDescription;
 	public JLabel jlTutoStepInstructions;
 
+	public int panelTutoExtraHeight = 100;
+	public int panelTutoExtraWidth = 150;
+	public int selectionPaneWidth = 650;
+	public int selectionPaneHeight = 700;
+	public int visualisationPaneWidth = 900;
+	
+	public JScrollPane jspTuto = null;
+
+	public static StandardView currentInstance = null;
 
 	public boolean isCtrlPressed = false;
 
 
 	private boolean processClusteringAfterExtraction = false;
 
-	private StandardView() {
+	public StandardView() {
 
+		try{
 		System.setProperty("org.graphstream.ui.renderer",
 				"org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 
@@ -118,9 +134,9 @@ public class StandardView extends JFrame implements CorpusObserver,
 		this.setTitle("Viesa");
 
 		if(MainTutorial.IS_TUTO)
-			this.setSize(650, 900);
+			this.setSize(selectionPaneWidth + panelTutoExtraWidth, selectionPaneHeight + panelTutoExtraHeight);
 		else
-			this.setSize(650, 700);
+			this.setSize(selectionPaneWidth, selectionPaneHeight);
 
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -147,10 +163,17 @@ public class StandardView extends JFrame implements CorpusObserver,
 
 				switch (pane.getSelectedIndex()) {
 				case 1:
-					StandardView.this.setSize(900, 700);
+					if(MainTutorial.IS_TUTO)
+						StandardView.this.setSize(visualisationPaneWidth, selectionPaneHeight + panelTutoExtraHeight);
+					else
+						StandardView.this.setSize(visualisationPaneWidth, selectionPaneHeight);
 					break;
 				default:
-					StandardView.this.setSize(650, 700);
+
+					if(MainTutorial.IS_TUTO)
+						StandardView.this.setSize(selectionPaneWidth + panelTutoExtraWidth, selectionPaneHeight + panelTutoExtraHeight);
+					else
+						StandardView.this.setSize(selectionPaneWidth, selectionPaneHeight);
 				}
 			}
 		});
@@ -168,6 +191,11 @@ public class StandardView extends JFrame implements CorpusObserver,
 //
 //				if (reponse == JOptionPane.YES_OPTION) {
 					StandardView.this.dispose();
+					
+					MainTutorial.IS_TUTO = false;
+					
+					SABRE.getInstance().removeObserver(StandardView.this);
+					Corpus.getCorpus().removeObserver(StandardView.this);
 					System.exit(0);
 //				}
 			}
@@ -175,11 +203,28 @@ public class StandardView extends JFrame implements CorpusObserver,
 
 		/* JMenu definition */
 		JMenu jm_corpus = new JMenu("Corpus");
+		JMenuItem jmiCorpusSelection = new JMenuItem("Go back to corpus selection frame");
 		JMenuItem jmi_save = new JMenuItem("Save corpus");
 		JMenuItem jmi_load = new JMenuItem("Load corpus");
 
-		jm_corpus.add(jmi_save);
-		jm_corpus.add(jmi_load);
+		jm_corpus.add(jmiCorpusSelection);
+//		jm_corpus.add(jmi_save);
+//		jm_corpus.add(jmi_load);
+		
+		jmiCorpusSelection.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new SelectCorpusFrame();
+
+				MainTutorial.IS_TUTO = false;
+				
+				SABRE.getInstance().removeObserver(StandardView.this);
+				Corpus.getCorpus().removeObserver(StandardView.this);
+				
+				dispose();
+			}
+		});
 
 		jmi_save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -272,27 +317,33 @@ public class StandardView extends JFrame implements CorpusObserver,
 
 		if(MainTutorial.IS_TUTO){
 
-			JPanel jpTuto = new JPanel(new MigLayout("", "[]", "[][]10[][]"));
+//			jlTutoStepDescription = new JEditorPane();
+//			jlTutoStepInstructions = new JEditorPane();
+//
+//			jlTutoStepDescription.setEditable(false);
+//			jlTutoStepInstructions.setEditable(false);
+//
+//			jlTutoStepDescription.setEditorKit(new WrapEditorKit());
+//			jlTutoStepInstructions.setEditorKit(new WrapEditorKit());
+//
+//			jlTutoStepDescription.setContentType("text/html");
+//			jlTutoStepInstructions.setContentType("text/html");
+			
+//			jlTutoStepDescription.setLineWrap(true);
+//			jlTutoStepInstructions.setLineWrap(true);
 
 			jlTutoStepDescription = new JLabel();
 			jlTutoStepInstructions = new JLabel();
 
 			jlTuto1 = new JLabel("<html><b>Description (step " + (MainTutorial.currentStepId) + "/" + (MainTutorial.lSteps.size() - 1) + ")</b></html>");
-			JLabel jlTuto2 = new JLabel("<html><b>How to go to the next step</b></html>");
-
-			jpTuto.add(jlTuto1, "wrap");
-			jpTuto.add(jlTutoStepDescription, "wrap");
-			jpTuto.add(jlTuto2, "wrap");
-			jpTuto.add(jlTutoStepInstructions);
-
-			this.add(jpTuto, BorderLayout.SOUTH);
-
+			
+			this.addJSPTuto();
 
 		}
 
 		JMenuBar jmb_bar = new JMenuBar();
 		setJMenuBar(jmb_bar);
-//		jmb_bar.add(jm_corpus);
+		jmb_bar.add(jm_corpus);
 
 		// //TO REMOVE
 		// System.out.println("pouet");
@@ -487,17 +538,29 @@ public class StandardView extends JFrame implements CorpusObserver,
 		// // }
 		// //END TO REMOVE
 
+		this.setExtendedState(this.getExtendedState()|JFrame.MAXIMIZED_VERT);		
 		setVisible(true);
+		
+		currentInstance = this;
+		Corpus.getCorpus().addObserver(this);
+		SABRE.getInstance().addObserver(this);
+		}
+		catch(Exception e){e.printStackTrace();}
 
 	}
 
-	private static class StandardViewHolder {
-		private final static StandardView sv = new StandardView();
-	}
+//	private static class StandardViewHolder {
+//		private final static StandardView sv = new StandardView();
+//	}
+//	
+	
 
 	public static StandardView getInstance() {
-		return StandardViewHolder.sv;
+		return currentInstance;
 	}
+//	public static StandardView getInstance() {
+//		return StandardViewHolder.sv;
+//	}
 
 	public void openSelectionFrame() {
 
@@ -529,6 +592,7 @@ public class StandardView extends JFrame implements CorpusObserver,
 			ois.close();
 
 			c.addObserver(StandardView.this);
+			//SABRE observer ?
 
 			// TODO revoir le processus de mise à jour
 
@@ -796,5 +860,41 @@ public class StandardView extends JFrame implements CorpusObserver,
 	public boolean isCtrlPressed(){
 		return isCtrlPressed;
 	}
+
+	public void addJSPTuto() {
+		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		int width = gd.getDisplayMode().getWidth();
+		int height = gd.getDisplayMode().getHeight();
+		
+		JPanel jpTuto = new JPanel(new MigLayout("", "[]", "[][]10[][]"));
+		JLabel jlTuto2 = new JLabel("<html><b>How to go to the next step</b></html>");
+
+		jpTuto.add(jlTuto1, "wrap");
+		jpTuto.add(jlTutoStepDescription, "wrap");
+		jpTuto.add(jlTuto2, "wrap");
+		jpTuto.add(jlTutoStepInstructions);
+
+		jspTuto = new JScrollPane(jpTuto,
+				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+//		jspTuto = new ScrollPane(jpTuto,
+//				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+//                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+		jspTuto.setPreferredSize(new Dimension(this.selectionPaneWidth - 20, this.selectionPaneHeight/3));
+		jspTuto.setMaximumSize(new Dimension(width - 20, this.selectionPaneHeight/3));
+		jspTuto.setMinimumSize(new Dimension(this.selectionPaneWidth  - 20, this.selectionPaneHeight/3));
+
+//        jspTuto.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+//        jspTuto.setVerticalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+		
+		jspTuto.setMaximumSize(new Dimension(width, height/2));
+
+		this.add(jspTuto, BorderLayout.SOUTH);
+
+	}
+
 
 }

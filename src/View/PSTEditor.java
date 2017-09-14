@@ -7,6 +7,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -29,7 +31,6 @@ import model.Corpus;
 import net.miginfocom.swing.MigLayout;
 import tuto.AbstractEditSimilarityStep;
 import tuto.AbstractTutoStep;
-import tuto.EditColumnSelection;
 import tuto.EditSimilarity;
 import tuto.EditSimilarityCombobox;
 
@@ -45,7 +46,7 @@ public class PSTEditor extends JDialog {
 	private static final long serialVersionUID = 3009343889307416197L;
 	List<PSTTable> lPsttable;
 
-	JButton jb_ok;
+	public JButton jb_ok;
 	JPanel jpTable;
 
 	public List<ArrayList<String>> previousdata;
@@ -385,6 +386,8 @@ public class PSTEditor extends JDialog {
 		}
 
 		ArrayList<ArrayList<Integer>> clusteredAnnotations = uf.getClusters();
+		
+		Collections.sort(clusteredAnnotations, new ListComparator());
 
 		int biggestTableSize = 0;
 
@@ -493,6 +496,15 @@ public class PSTEditor extends JDialog {
 
 	public void activateOKButton() {
 		jb_ok.setEnabled(true);
+	}
+	
+
+	private class ListComparator implements Comparator<List<Integer>> {
+		
+			  @Override
+			  public int compare(List<Integer> lhs, List<Integer> rhs) {
+			    return rhs.size() - lhs.size();
+			  }
 	}
 
 }

@@ -19,9 +19,11 @@ public class FirstExtraction extends AbstractTutoStep {
 				+ "- the order of the lines is important (it usually represent temporality);<br>"
 				+ "- the order of the columns is irrelevant (they could be exchanged without altering the meaning of the data).<br><br>"
 				+ "In this tutorial we consider two very simple arrays named \"Tuto file 1.csv\" and \"Tuto file 2.csv\".<br>"
-				+ "One of them is currently displayed in the above overview and you can click on the other to visualize it (the arrays are listed in the area labeled \"Corpus\").<br><br>"
+				+ "One of them is currently displayed in the above overview and you can click on the name of the other in the list located<br>"
+				+ "in the area labeled \"Corpus\" to visualize it.<br><br>"
 				+ "You are currently in the tab which enables to modify the extraction parameters. <br>"
-				+ "Before explaining how these parameters work, we will perform a first extraction to see the regularities obtained with the default values.";
+				+ "Before explaining how these parameters work, we will perform a first extraction to see the regularities obtained with the <br>"
+				+ "default values.";
 	}
 
 	@Override

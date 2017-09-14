@@ -20,7 +20,7 @@ public class ChangeDisplayedClusteringMethod extends AbstractTutoStep {
 					+ "It allows to change the way the patterns are clustered (different methods are possible).<br><br>"
 					+ "Initially the possible choices are:<br>"
 					+ "- Extracted alignments: contain the list of the extracted alignments (this is the list displayed when the clustering step is skipped).<br>"
-					+ "- ROCK and Single-Link: two different methods used to cluster the patterns.<br><br>"
+					+ "- ROCK and Single-Link: two different methods used to cluster the patterns.<br>"
 					+ "Other clustering methods may be added in the future.";
 	}
 

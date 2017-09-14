@@ -59,7 +59,7 @@ public class EditGap extends AbstractTutoStep {
 	public String instructions() {
 		return "- Go the \"Data selection\" tab<br>"
 				+ "- Change the value of the gap cost to " + newParameterValue + "<br>"
-				+ "- Start the extraction";
+				+ "- Start the extraction<br><br>";
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class EditGap extends AbstractTutoStep {
     +"<td align=\"center\" valign=\"middle\"> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp C</td>" 
   +"</tr>"
 +"</table>"
-				+ "We call this type of configuration a <i>desynchronization</i>. It may lead to alignments which patterns have different shapes.";
+				+ "We call this type of configuration a <i>desynchronization</i>. It may lead to alignments which two patterns have different shapes.";
 	}
 
 	@Override
