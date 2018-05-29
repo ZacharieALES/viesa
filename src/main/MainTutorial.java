@@ -95,7 +95,7 @@ public class MainTutorial {
 						+ "At each step you will find at the bottom of the frame:<br> "
 						+ "- a description of the current step;<br>"
 						+ "- instructions to go to the next step.<br><br>"
-						+ "If you have any problem/comment/suggestion related to this software please feel free to contact me: zacharie.ales@univ-avignon.fr</html>");
+						+ "If you have any problem/comment/suggestion related to this software please feel free to contact me: zacharie.ales@ensta.fr</html>");
 
 
 

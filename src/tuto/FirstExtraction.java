@@ -14,8 +14,8 @@ public class FirstExtraction extends AbstractTutoStep {
 
 	@Override
 	public String description() {
-		return "The aim of this software is to extract regularities in <i>annotation array</i>.<br>"
-				+ "An annotation is a data structure in which: <br>"
+		return "The aim of this software is to extract regularities in <i>annotation arrays</i>.<br>"
+				+ "An annotation array is a data structure in which: <br>"
 				+ "- the order of the lines is important (it usually represent temporality);<br>"
 				+ "- the order of the columns is irrelevant (they could be exchanged without altering the meaning of the data).<br><br>"
 				+ "In this tutorial we consider two very simple arrays named \"Tuto file 1.csv\" and \"Tuto file 2.csv\".<br>"

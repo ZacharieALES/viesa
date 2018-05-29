@@ -3,7 +3,6 @@ package View;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -17,11 +16,11 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import extraction.SABRE;
 import extraction.SABREParameter;
+import main.MainChanoni;
 import main.MainCogniSismef;
 import main.MainTutorial;
-import main.MainVito;
 import main.MainTutorial.StepWrapper;
-import model.Corpus;
+import main.MainVito;
 import net.miginfocom.swing.MigLayout;
 
 public class SelectCorpusFrame extends JFrame{
@@ -29,7 +28,8 @@ public class SelectCorpusFrame extends JFrame{
 	private static final long serialVersionUID = -4070320145031804723L;
 
 	private final boolean useCogniCISMEF = false;
-	private final boolean useVito = true;
+	private final boolean useVito = false;
+	private final boolean useParentEnfant = true;
 
 
 	public SelectCorpusFrame(){
@@ -138,10 +138,26 @@ public class SelectCorpusFrame extends JFrame{
 			
 			getContentPane().add(jbCogniCISMEF, "center, wrap");
 		}
+		
+		if(useParentEnfant){
+
+			JButton jbStorytelling = new JButton("Open storytelling corpus");
+			jbStorytelling.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+
+					SelectCorpusFrame.this.dispose();
+					MainChanoni.run();
+				}
+			});
+			
+			getContentPane().add(jbStorytelling, "center, wrap");
+		}
 
 		if(useVito){
 
-			JButton jbVito = new JButton("Open Silent corpus");
+			JButton jbVito = new JButton("Open silent corpus");
 			jbVito.addActionListener(new ActionListener() {
 
 				@Override

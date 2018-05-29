@@ -678,7 +678,6 @@ public class AATable extends JTable implements ComponentListener{
 				else{
 
 					this.setHorizontalAlignment(JLabel.LEFT); 
-
 					/* If we represent a Pattern in an AnnotatedArray */
 					if(cell.isPatternCell())
 						this.setFont(this.getFont().deriveFont(Font.BOLD, 11));
